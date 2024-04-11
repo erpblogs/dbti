@@ -1,0 +1,132 @@
+<odoo>
+    <template id="login_layout" inherit_id="web.login_layout" name="Custom Login Layout">
+        <xpath expr="//t[@t-set='body_classname']" position="replace">
+            <t t-set="body_classname" t-value="'bg-white'" />
+            <t t-set="login_card_classes" t-value="'oc_login_card_classes'" />
+        </xpath>
+    </template>
+
+    <template id="login" inherit_id="web.login" name="Custom Login Form">
+        <xpath expr="//form" position="replace">
+            <t t-set="disable_footer">1</t>
+            <!-- <t t-set="login_card_classes">oc-web-login-style</t> -->
+            <t t-set="body_classname" t-value="'bg-white'" />
+
+            <div class="login-container">
+                <div class="login-layout d-flex flex-column gap-4">
+                    <div class="login-header d-flex flex-column login-header gap-2">
+                        <span class="login-title">Sign-in</span>
+                    </div>
+                    <form class="oe_login_form" role="form" t-attf-action="/web/login" method="post"
+                        onsubmit="this.action = '/web/login' + location.hash">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" ></input>
+
+
+                        <div class="mb-3 field-login">
+                            <label for="login" class="form-label">Email Address <span class="text-danger">*</span></label>
+                            <input type="text" placeholder="Please enter your email" name="login"
+                                t-att-value="login"
+                                id="login"
+                                t-attf-class="form-control #{'form-control-sm' if form_small else ''}"
+                                required="required" autocomplete="username" autofocus="autofocus"
+                                autocapitalize="off" />
+                        </div>
+
+                        <p class="alert alert-danger" t-if="account_error" role="alert">
+                            <t t-esc="account_error" />
+                        </p>
+
+                        <div class="mb-3 field-password">
+                            <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                            <input type="password" placeholder="Please enter your password"
+                                name="password" id="password"
+                                t-attf-class="form-control #{'form-control-sm' if form_small else ''}"
+                                required="required" autocomplete="current-password"
+                                t-att-autofocus="'autofocus' if login else None" maxlength="4096" />
+                        </div>
+                        <p class="alert alert-danger" t-if="(error and not account_error)" role="alert">
+                            <t t-esc="error" />
+                        </p>
+                        <p class="alert alert-success" t-if="message" role="status">
+                            <t t-esc="message" />
+                        </p>
+
+                        <div class="justify-content-between mb-2 d-flex small field-remember">
+                            <div
+                                class="login-checkbox d-flex justify-content-center align-items-center">
+                                <input type="checkbox" name="remember" id="switch-remember"
+                                    value="1" />
+                                <label for="switch-remember">Remember me</label>
+                            </div>
+                            <a t-if="reset_password_enabled" class="reset-password"
+                                t-attf-href="/web/reset_password?{{ keep_query() }}">Forgot Password</a>
+                        </div>
+
+                        <div
+                            t-attf-class="clearfix oe_login_buttons text-center gap-1 d-grid mb-1 {{'pt-2' if form_small else 'pt-3'}}">
+                            <button type="submit" class="btn btn-primary">Sign-in</button>
+                            <t t-if="debug">
+                                <button type="submit" name="redirect" value="/web/become"
+                                    class="btn btn-link btn-sm">Log in as superuser</button>
+                            </t>
+                            <div class="o_login_auth" />
+                        </div>
+
+                        <input type="hidden" name="redirect" t-att-value="redirect" />
+                    </form>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+
+    <template id="reset_password" inherit_id="auth_signup.reset_password" name="Custom Reset password">
+        <xpath expr="//t[@t-call='web.login_layout']" position="inside">
+            <t t-set="disable_footer">1</t>
+        </xpath>
+
+        <xpath expr="//form/input[@name='csrf_token']" position="before">
+            <div class="form-title">
+                <span>Forgot Password</span>
+            </div>
+        </xpath>
+        <!-- <xpath expr="//form" position="attributes">
+            <attribute name="class">oc-reset-password</attribute>
+        </xpath> -->
+
+        <xpath expr="//form//div[hasclass('field-login')]" position="replace">
+            <div class="form-group field-login">
+                <label for="login">Email Address <span class="text-danger">*</span></label>
+                <div class="input-fields">
+                    <input type="text" name="login" t-att-value="login" id="login" class="form-control"
+                           placeholder="email@example.com"
+                           autocomplete="off"
+                           autofocus="autofocus" required="required" autocapitalize="off"/>
+                </div>
+            </div>
+        </xpath>
+
+        <xpath expr="//form/div[hasclass('oe_login_buttons')]/button[@type='submit']" position="replace">
+            <button type="submit" class="btn btn-primary btn-block">Reset Password</button>
+        </xpath>
+
+        <xpath expr="//form/div[hasclass('oe_login_buttons')]/div[1]" position="replace">
+            <div class="d-flex justify-content-end align-items-center small mt-2">
+                <a t-if="not token" t-attf-href="/web/login?{{ keep_query() }}">Return to login screen</a>
+                <a t-if="invalid_token" href="/web/login">Return to login screen</a>
+            </div>
+        </xpath>
+
+        <xpath expr="//form/p[@t-if='error']" position="replace">
+            <div class="error-group">
+                <p class="alert alert-danger" t-if="error" role="alert">
+                    <t t-esc="error"/>
+                </p>
+            </div>
+        </xpath>
+
+        <xpath expr="//form//div[hasclass('o_login_auth')]" position="attributes">
+            <attribute name="class">o_login_auth d-none</attribute>
+        </xpath>
+    </template>
+</odoo>

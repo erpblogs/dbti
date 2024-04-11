@@ -1,0 +1,101 @@
+# -*- coding: utf-8 -*-
+
+import logging
+import werkzeug
+from werkzeug.urls import url_encode
+
+import re
+from odoo import tools, http, _
+from odoo.http import request
+
+from odoo.exceptions import UserError
+from odoo.osv import expression
+from odoo.tools.misc import ustr
+
+from odoo.addons.base.models.ir_mail_server import MailDeliveryException
+from odoo.addons.auth_signup.models.res_partner import SignupError, now
+from odoo.addons.web.controllers.home import ensure_db, Home, SIGN_UP_REQUEST_PARAMS, LOGIN_SUCCESSFUL_PARAMS
+from odoo.addons.auth_signup.controllers.main import AuthSignupHome
+
+# from odoo.addons.auth_oauth.controllers.main import OAuthLogin
+
+# from odoo.exceptions import UserError, AccessDenied, ValidationError
+# from odoo.addons.auth_signup.models.res_users import SignupError
+# 
+# from odoo.addons.auth_totp.controllers.home import Home as auth_totp_Home
+
+TRUSTED_DEVICE_COOKIE = 'td_id'
+TRUSTED_DEVICE_AGE = 90*86400
+
+_logger = logging.getLogger(__name__)
+
+
+class AuthSignupHome(Home):
+
+    @http.route('/web/login', type='http', auth="none")
+    def web_login(self, redirect=None, **kw):
+        response = super().web_login(redirect, **kw)
+  
+        
+        not_admin = response.qcontext.get('login', '') != 'admin'
+        if not_admin and response.qcontext.get('login') and not tools.email_normalize(response.qcontext.get('login', '')):
+            response.qcontext['account_error'] = _('Wrong email format. Please try again.')
+        
+        elif response.qcontext.get('error') and not request.params.get('oauth_error'):
+            response.qcontext['error'] = _("Wrong email or password. Please try again.")
+            # response.qcontext['error'] = _('Your password was incorrect. Please try again.')
+            if response.qcontext.get('login'):
+                user_count = request.env['res.users'].sudo().search_count([('login', '=ilike', response.qcontext['login']),
+                                                                        ('login_date', '!=', False)])
+                if not user_count:
+                    response.qcontext['account_error'] = _('Your email was incorrect. Please try again.')
+                    # Wrong email or password. Please try again.
+        # else:
+        #     response.qcontext['account_error'] = False
+        #     response.qcontext['error'] = False
+            
+        return response
+    
+    
+class CustomAuthSignup(AuthSignupHome):
+    
+    @http.route('/web/reset_password', type='http', auth='public', website=True, sitemap=False)
+    def web_auth_reset_password(self, *args, **kw):
+        qcontext = self.get_auth_signup_qcontext()
+
+        if not qcontext.get('token') and not qcontext.get('reset_password_enabled'):
+            raise werkzeug.exceptions.NotFound()
+
+        if 'error' not in qcontext and request.httprequest.method == 'POST':
+            try:
+                if qcontext.get('token'):
+                    self.do_signup(qcontext)
+                    return self.web_login(*args, **kw)
+                else:
+                    login = qcontext.get('login')
+                    assert login, _("No login provided.")
+                    _logger.info(
+                        "Password reset attempt for <%s> by user <%s> from %s",
+                        login, request.env.user.login, request.httprequest.remote_addr)
+                    if login != 'admin' and not tools.email_normalize(login):
+                        request.env['res.users'].sudo().reset_password(login)
+                        qcontext['error'] = _(f'Wrong email format. Please try again.')
+                    else:
+                        qcontext['message'] = _("Verify link has been sent to your email.")
+            except UserError as e:
+                qcontext['error'] = e.args[0]
+            except SignupError:
+                qcontext['error'] = _("Could not reset your password")
+                _logger.exception('error when resetting password')
+            except Exception as e:
+                qcontext['error'] = str(e)
+
+        elif 'signup_email' in qcontext:
+            user = request.env['res.users'].sudo().search([('email', '=', qcontext.get('signup_email')), ('state', '!=', 'new')], limit=1)
+            if user:
+                return request.redirect('/web/login?%s' % url_encode({'login': user.login, 'redirect': '/web'}))
+
+        response = request.render('auth_signup.reset_password', qcontext)
+        response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+        response.headers['Content-Security-Policy'] = "frame-ancestors 'self'"
+        return response
