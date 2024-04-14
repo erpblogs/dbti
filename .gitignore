@@ -1,0 +1,14 @@
+.idea
+*.pyc
+
+odoo-config/odoo.conf
+odoo-config/nginx.conf
+
+odoo-data/addons/
+odoo-data/sessions/
+odoo-data/filestore/
+
+odoo-addons/*
+postgres-data/*
+
+odoo-logs/odoo-server.log

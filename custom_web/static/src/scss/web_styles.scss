@@ -1,0 +1,103 @@
+.oc_change_password_form {
+
+    h3 {
+        //styleName: Header/H3;
+        // font-family: Pretendard;
+        font-size: 40px;
+        font-weight: 600;
+        line-height: 48px;
+        text-align: left;
+        color: #272B31;
+        margin-bottom: 32px;
+
+    }
+
+    .o_form_label {
+        //styleName: Sub/subL;
+        // font-family: Pretendard;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 26px;
+        text-align: left;
+        margin-bottom: 8px;
+
+    }
+
+    .o_input {
+        // width: Fill (656px)px;
+        // height: Fixed (60px)px;
+        font-size: 24px;
+        width: 656px;
+        height: 60px;
+        line-height: 60px;
+        padding: 0px 16px;
+        gap: 0px;
+        border-radius: 8px;
+        border: 1px solid #B9B9C3;
+        justify: space-between;
+        opacity: 0px;
+        margin-bottom: 32px;
+
+        &::placeholder,
+        &::-ms-input-placeholder,
+        &::-webkit-input-placeholder {
+            color: #0B0B0C;
+            //styleName: Sub/sub S;
+            font-family: Pretendard;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 16px;
+            text-align: left;
+        }
+
+
+    }
+
+}
+
+.oc_change_password_footer {
+    .btn-primary {
+        width: 308px;
+        height: 54px;
+        padding: 8px 16px;
+        gap: 0px;
+        border-radius: 4px;
+        opacity: 0px;
+        background: #007FEB;
+            margin-right: 40px !important;
+
+        span {
+            //styleName: button;
+            font-family: Pretendard;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 22px;
+            text-align: left;
+            color: #FFFFFF;
+
+        }
+    }
+
+    .btn-secondary {
+        width: 308px;
+        height: 54px;
+        padding: 8px 16px;
+        gap: 0px;
+        border-radius: 4px;
+        opacity: 0px;
+        background: #FFFFFF;
+
+        border: 0.5px solid #EA5455;
+        margin-right: 40px !important;
+
+        span {
+            color: #5A5B5E;
+            //styleName: button;
+            // font-family: Pretendard;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 22px;
+            text-align: left;
+        }
+    }
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="change_password_own_form" model="ir.ui.view">
+            <field name="name">Change Own Password Inherit</field>
+            <field name="model">change.password.own</field>
+            <field name="inherit_id" ref="base.change_password_own_form" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//form" position="replace">
+                    <form string="Change Password" class="oc_change_password_form">
+                        <h3>Change Password</h3>
+                        <div class="row">
+                            <div><label for="new_password">New password </label>&amp;nbsp;<span class="text-danger">*</span></div>
+                            <field name="new_password" password="True" required="1" placeholder="New password"/>
+                            <div><label for="confirm_password">Confirm new password </label>&amp;nbsp;<span class="text-danger">*</span></div>
+                            <field name="confirm_password" password="True" required="1" placeholder="New password"/>
+                        </div>
+                        <footer class="oc_change_password_footer"> 
+                            <button string="Cancel" class="btn-secondary" special="cancel"
+                                data-hotkey="x" />
+                            <button string="Save" name="change_password" type="object"
+                                class="btn-primary" data-hotkey="q" />
+                        </footer>
+                    </form>
+                </xpath>
+
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

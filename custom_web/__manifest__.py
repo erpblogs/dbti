@@ -26,10 +26,10 @@ Long description of module's purpose
         # 'data/website_data.xml',
         
         # view
+        'views/res_user_views.xml',
         
         # layout
         'views/web_layout.xml',
-        # 'views/contactus_layout.xml',
 
     ],
     # only loaded in demonstration mode
@@ -37,6 +37,9 @@ Long description of module's purpose
         # 'demo/demo.xml',
     ],
     'assets': {
+        'web.assets_backend': [
+            'custom_web/static/src/scss/web_styles.scss',
+        ],
         'web.assets_frontend': [
             # 'custom_web/static/src/scss/lib/custom_bootstrap.scss',
             # 'custom_web/static/src/scss/style.scss',
