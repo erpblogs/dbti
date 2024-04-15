@@ -29,10 +29,10 @@
             </field>
         </record>
 
-        <record id="user_groups_view_inherit" model="ir.ui.view">
+        <record id="view_users_form_inherit" model="ir.ui.view">
             <field name="name">res.users.form.inherit</field>
             <field name="model">res.users</field>
-            <field name="inherit_id" ref="base.user_groups_view"/>
+            <field name="inherit_id" ref="base.view_users_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='groups_id']/" position="attributes" >
                     <attribute name="string">Group permission</attribute>
@@ -40,7 +40,6 @@
             </field>
         </record>
 
-        
         <record id="base.user_groups_view" model="ir.ui.view">
             <field name="active">False</field>
         </record>
