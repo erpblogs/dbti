@@ -27,6 +27,7 @@ Long description of module's purpose
         
         # view
         'views/res_user_views.xml',
+        'views/ir_model_views.xml',
         
         # layout
         'views/web_layout.xml',

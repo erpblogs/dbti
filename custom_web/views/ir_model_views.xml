@@ -1,0 +1,15 @@
+<odoo>
+
+    <record id="base.menu_translation" model="ir.ui.menu">
+        <field name="sequence" eval="100"/>
+    </record>
+
+    <menuitem
+        id="ir_model_model_fields"
+        name="Fields"
+        sequence="2" 
+        action="base.action_model_fields"
+        parent="base.menu_administration"
+        groups="base.group_system" />
+
+</odoo>
