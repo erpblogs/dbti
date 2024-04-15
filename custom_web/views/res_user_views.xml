@@ -40,6 +40,7 @@
             </field>
         </record>
 
+        
         <record id="base.user_groups_view" model="ir.ui.view">
             <field name="active">False</field>
         </record>
