@@ -53,7 +53,7 @@ Long description of module's purpose
         #     ('before', 'web/static/src/scss/secondary_variables.scss', 'custom_web/static/src/scss/secondary_variables.scss'),
         # ],
         'web._assets_common_styles': [
-            'custom_web/static/src/scss/fonts.scss',
+            'custom_web/static/fonts/fonts.scss',
         ],
     }
 }

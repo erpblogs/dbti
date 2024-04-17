@@ -1,0 +1,29 @@
+
+// ------------------------------------------------------------------
+// Pretendard fonts
+// ------------------------------------------------------------------
+$custom-font-path: './custom_fonts';
+
+@mixin custom-font($family, $type, $weight, $style) {
+    @font-face {
+        font-family: $family;
+        src: url('#{$custom-font-path}/#{$family}/#{$family}-#{$type}.ttf') format('truetype');
+        font-weight: $weight;
+        font-style: $style;
+    }
+}
+
+@mixin custom-font-pair($family) {
+    @include custom-font('#{$family}', 'Black', 900, normal);
+    @include custom-font('#{$family}', 'ExtraBold', 800, bold);
+    @include custom-font('#{$family}', 'Bold', 700, bold);
+    @include custom-font('#{$family}', 'SemiBold', 600, bold);
+    @include custom-font('#{$family}', 'Medium', 500, normal);
+    @include custom-font('#{$family}', 'Regular', 400, normal);
+    @include custom-font('#{$family}', 'Light', 300, normal);
+    @include custom-font('#{$family}', 'ExtraLight', 200, normal);
+    @include custom-font('#{$family}', 'Thin', 100, normal);
+}
+
+@include custom-font-pair('Pretendard');
+
