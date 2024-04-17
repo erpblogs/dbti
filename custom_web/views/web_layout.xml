@@ -15,7 +15,7 @@
             <div class="login-container">
                 <div class="login-layout d-flex flex-column gap-4">
                     <div class="login-header d-flex flex-column login-header gap-2">
-                        <span class="login-title">Sign-in</span>
+                        <h3 class="login-title">Sign-in</h3>
                     </div>
                     <form class="oe_login_form" role="form" t-attf-action="/web/login" method="post"
                         onsubmit="this.action = '/web/login' + location.hash">
@@ -23,8 +23,8 @@
 
 
                         <div class="mb-3 field-login">
-                            <label for="login" class="form-label">Email Address <span class="text-danger">*</span></label>
-                            <input type="text" placeholder="Please enter your email" name="login"
+                            <label for="login" class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="text" placeholder="Email" name="login"
                                 t-att-value="login"
                                 id="login"
                                 t-attf-class="form-control #{'form-control-sm' if form_small else ''}"
@@ -38,7 +38,7 @@
 
                         <div class="mb-3 field-password">
                             <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
-                            <input type="password" placeholder="Please enter your password"
+                            <input type="password" placeholder="Password"
                                 name="password" id="password"
                                 t-attf-class="form-control #{'form-control-sm' if form_small else ''}"
                                 required="required" autocomplete="current-password"
@@ -87,7 +87,7 @@
 
         <xpath expr="//form/input[@name='csrf_token']" position="before">
             <div class="form-title">
-                <span>Forgot Password</span>
+                <h3>Forgot Password</h3>
             </div>
         </xpath>
         <!-- <xpath expr="//form" position="attributes">

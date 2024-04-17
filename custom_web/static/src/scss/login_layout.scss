@@ -30,9 +30,6 @@
             }
 
             .login-title {
-                font-size: 30px;
-                font-weight: 590;
-                line-height: 38px;
                 letter-spacing: 0em;
                 text-align: left;
                 color: #101828;
@@ -41,9 +38,6 @@
             }
 
             .login-sub-title {
-                font-size: 16px;
-                font-weight: 400;
-                line-height: 24px;
                 letter-spacing: 0em;
                 text-align: center;
                 color: #475467;
@@ -87,9 +81,7 @@
 
                     label {
                         //styleName: Text sm/Medium;
-                        font-size: 14px;
-                        font-weight: 510;
-                        line-height: 20px;
+                        font-weight: 400;
                         text-align: left;
                         color: #344054;
                         margin-left: 8px;
@@ -98,11 +90,8 @@
 
                 .reset-password {
                     // font-family: SF Pro;
-                    font-size: 14px;
-                    font-weight: 400;
-                    line-height: 20px;
                     text-align: left;
-                    color: #007AFF;
+                    // color: #007AFF;
                 }
             }
         }
@@ -110,16 +99,13 @@
 }
 
 .oc_login_card_classes {
-    max-width: 656px !important;
+    // max-width: 656px !important;
 
     .oe_reset_password_form {
         .form-title {
 
             //styleName: Header/H3;
             // font-family: Pretendard;
-            font-size: 40px;
-            font-weight: 600;
-            line-height: 48px;
             text-align: left;
             padding-bottom: 32px;
 
@@ -130,21 +116,13 @@
 
                 //styleName: Sub/subL;
                 // font-family: Pretendard;
-                font-size: 18px;
-                font-weight: 500;
-                line-height: 26px;
                 text-align: left;
                 padding-bottom: 8px;
 
             }
 
             .input-fields>input {
-                padding: 0px 16px;
                 gap: 0px;
-                border-radius: 8px;
-                border: 1px solid #B9B9C3;
-                line-height: 60px;
-                font-size: 32px;
 
                 &::placeholder,
                 &::-ms-input-placeholder,
@@ -152,9 +130,6 @@
                     color: #0B0B0C;
                     //styleName: Sub/sub S;
                     // font-family: Pretendard;
-                    font-size: 12px;
-                    font-weight: 600;
-                    line-height: 16px;
                     text-align: left;
                     color: #828282;
                 }
