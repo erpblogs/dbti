@@ -137,9 +137,9 @@ class CustomAuthSignup(AuthSignupHome):
                         "Password reset attempt for <%s> by user <%s> from %s",
                         login, request.env.user.login, request.httprequest.remote_addr)
                     if login != 'admin' and not tools.email_normalize(login):
-                        request.env['res.users'].sudo().reset_password(login)
                         qcontext['error'] = _(f'Wrong email format. Please try again.')
                     else:
+                        request.env['res.users'].sudo().reset_password(login)
                         qcontext['message'] = _("Verify link has been sent to your email.")
             except UserError as e:
                 qcontext['error'] = e.args[0]
