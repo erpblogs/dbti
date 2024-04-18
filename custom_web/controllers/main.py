@@ -36,6 +36,7 @@ class AuthSignupHome(Home):
     def web_login(self, redirect=None, **kw):
         
         user = request.env['res.users'].browse(request.session.pre_uid)
+        
         if user and request.httprequest.method == 'GET':
         # if request.httprequest.method == 'GET':
             cookies = request.httprequest.cookies
