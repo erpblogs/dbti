@@ -34,6 +34,43 @@ class AuthSignupHome(Home):
 
     @http.route('/web/login', type='http', auth="none")
     def web_login(self, redirect=None, **kw):
+        
+        user = request.env['res.users'].browse(request.session.pre_uid)
+        if user and request.httprequest.method == 'GET':
+        # if request.httprequest.method == 'GET':
+            cookies = request.httprequest.cookies
+            key = cookies.get(TRUSTED_DEVICE_COOKIE)
+            if key:
+                user_match = request.env['auth_totp.device']._check_credentials_for_uid(
+                    scope="browser", key=key, uid=user.id)
+                if user_match:
+                    request.session.finalize(request.env)
+                    return request.redirect(self._login_redirect(request.session.uid, redirect=redirect))
+                
+        elif user and request.httprequest.method == 'POST':
+            if kw.get('remember'):
+                name = _("%(browser)s on %(platform)s",
+                    browser=request.httprequest.user_agent.browser.capitalize(),
+                    platform=request.httprequest.user_agent.platform.capitalize(),
+                )
+
+                if request.geoip.city.name:
+                    name += f" ({request.geoip.city.name}, {request.geoip.country_name})"
+
+                key = request.env['auth_totp.device']._generate("browser", name)
+                response.set_cookie(
+                    key=TRUSTED_DEVICE_COOKIE,
+                    value=key,
+                    max_age=TRUSTED_DEVICE_AGE,
+                    httponly=True,
+                    samesite='Lax',
+                    pre_uid=user.uid
+                )
+                
+            
+            # Crapy workaround for unupdatable Odoo Mobile App iOS (Thanks Apple :@)
+            request.session.touch()
+        
         response = super().web_login(redirect, **kw)
   
         
@@ -53,10 +90,12 @@ class AuthSignupHome(Home):
         # else:
         #     response.qcontext['account_error'] = False
         #     response.qcontext['error'] = False
-            
+        
+        
+        
         return response
     
-    
+
 class CustomAuthSignup(AuthSignupHome):
     
     @http.route('/web/reset_password', type='http', auth='public', website=True, sitemap=False)

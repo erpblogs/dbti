@@ -28,7 +28,7 @@
                                 t-att-value="login"
                                 id="login"
                                 t-attf-class="form-control #{'form-control-sm' if form_small else ''}"
-                                required="required" autocomplete="username" autofocus="autofocus"
+                                required="required" autocomplete="login" autofocus="autofocus"
                                 autocapitalize="off" />
                         </div>
 
@@ -41,7 +41,7 @@
                             <input type="password" placeholder="Password"
                                 name="password" id="password"
                                 t-attf-class="form-control #{'form-control-sm' if form_small else ''}"
-                                required="required" autocomplete="current-password"
+                                required="required" autocomplete="password"
                                 t-att-autofocus="'autofocus' if login else None" maxlength="4096" />
                         </div>
                         <p class="alert alert-danger" t-if="(error and not account_error)" role="alert">
