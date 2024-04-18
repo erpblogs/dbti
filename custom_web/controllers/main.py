@@ -55,7 +55,7 @@ class AuthSignupHome(Home):
             response.qcontext['error'] = WRONG_EMAIL_PASSWORD
             if response.qcontext.get('login'):
                 user_count = request.env['res.users'].sudo().search_count([
-                                                        ('login', '=ilike', response.qcontext['login'])
+                                                        ('login', '=ilike', response.qcontext['login']),
                                                         ('active', 'in', [True, False])
                                                         ])
                 if not user_count:
