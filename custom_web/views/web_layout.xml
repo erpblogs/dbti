@@ -54,8 +54,8 @@
                         <div class="justify-content-between mb-2 d-flex small field-remember">
                             <div
                                 class="login-checkbox d-flex justify-content-center align-items-center">
-                                <input type="checkbox" name="remember" id="switch-remember"
-                                    value="1" />
+                                <input type="checkbox" name="remember" id="switch-remember" 
+                                t-att-checked="remember"/>
                                 <label for="switch-remember">Remember me</label>
                             </div>
                             <a t-if="reset_password_enabled" class="reset-password"

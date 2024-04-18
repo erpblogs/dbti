@@ -25,6 +25,7 @@ from odoo.addons.auth_signup.controllers.main import AuthSignupHome
 # from odoo.addons.auth_totp.controllers.home import Home as auth_totp_Home
 
 TRUSTED_DEVICE_COOKIE = 'td_id'
+TRUSTED_USER_COOKIE = 'pre_uid'
 TRUSTED_DEVICE_AGE = 90*86400
 
 _logger = logging.getLogger(__name__)
@@ -34,43 +35,7 @@ class AuthSignupHome(Home):
 
     @http.route('/web/login', type='http', auth="none")
     def web_login(self, redirect=None, **kw):
-        
-        user = request.env['res.users'].browse(request.session.pre_uid)
-        
-        if user and request.httprequest.method == 'GET':
-        # if request.httprequest.method == 'GET':
-            cookies = request.httprequest.cookies
-            key = cookies.get(TRUSTED_DEVICE_COOKIE)
-            if key:
-                user_match = request.env['auth_totp.device']._check_credentials_for_uid(
-                    scope="browser", key=key, uid=user.id)
-                if user_match:
-                    request.session.finalize(request.env)
-                    return request.redirect(self._login_redirect(request.session.uid, redirect=redirect))
-                
-        elif user and request.httprequest.method == 'POST':
-            if kw.get('remember'):
-                name = _("%(browser)s on %(platform)s",
-                    browser=request.httprequest.user_agent.browser.capitalize(),
-                    platform=request.httprequest.user_agent.platform.capitalize(),
-                )
-
-                if request.geoip.city.name:
-                    name += f" ({request.geoip.city.name}, {request.geoip.country_name})"
-
-                key = request.env['auth_totp.device']._generate("browser", name)
-                response.set_cookie(
-                    key=TRUSTED_DEVICE_COOKIE,
-                    value=key,
-                    max_age=TRUSTED_DEVICE_AGE,
-                    httponly=True,
-                    samesite='Lax',
-                    pre_uid=user.uid
-                )
-                
-            
-            # Crapy workaround for unupdatable Odoo Mobile App iOS (Thanks Apple :@)
-            request.session.touch()
+    
         
         response = super().web_login(redirect, **kw)
   
@@ -93,7 +58,55 @@ class AuthSignupHome(Home):
         #     response.qcontext['error'] = False
         
         
-        
+        if kw.get('remember'):
+            name = _("%(browser)s on %(platform)s",
+                browser=request.httprequest.user_agent.browser.capitalize(),
+                platform=request.httprequest.user_agent.platform.capitalize(),
+            )
+
+            if request.geoip.city.name:
+                name += f" ({request.geoip.city.name}, {request.geoip.country_name})"
+
+            key = request.env['auth_totp.device']._generate("browser", name)
+            response.set_cookie(
+                key=TRUSTED_DEVICE_COOKIE,
+                value=key,
+                max_age=TRUSTED_DEVICE_AGE,
+                httponly=True,
+                samesite='Lax',
+                
+            )
+            if request.session.uid:
+                response.set_cookie(
+                    key=TRUSTED_USER_COOKIE,
+                    value=f'{request.session.uid}',
+                    max_age=TRUSTED_DEVICE_AGE,
+                    httponly=True,
+                    samesite='Lax',
+                )
+            
+            # Crapy workaround for unupdatable Odoo Mobile App iOS (Thanks Apple :@)
+            request.session.touch()
+            
+        if not request.session.uid:
+            
+            cookies = request.httprequest.cookies
+            pre_uid = cookies.get(TRUSTED_USER_COOKIE)
+            user = None
+            try:
+                user = request.env['res.users'].sudo().browse(int(pre_uid))
+            except:
+                pass
+            key = cookies.get(TRUSTED_DEVICE_COOKIE)
+            if key and user:
+                user_match = request.env['auth_totp.device']._check_credentials_for_uid(
+                    scope="browser", key=key, uid=user.id)
+                if user_match:
+                    # request.session.finalize(request.env)
+                    # kw['login'] = user.login
+                    response.qcontext['login'] = user.login
+                    response.qcontext['remember'] = True
+                
         return response
     
 
