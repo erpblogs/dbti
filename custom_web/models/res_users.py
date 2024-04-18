@@ -14,18 +14,22 @@ from odoo.osv import expression
 from odoo.tools.misc import ustr
 from odoo.http import request
 
-from odoo.addons.base.models.ir_mail_server import MailDeliveryException
 from odoo.addons.auth_signup.models.res_partner import SignupError, now
 
 _logger = logging.getLogger(__name__)
+
+INACTIVE_EMAIL_WARNING = _('This email address is no longer active. Please use a different account to log in.')
 
 class ResUsers(models.Model):
     _inherit = 'res.users'
 
 
-    # def reset_password(self, login):
-    #     not_admin = login != 'admin'
-    #     if not_admin and not tools.email_normalize(login):
-    #         raise Exception(_('No account found for this login'))
+    def reset_password(self, login):
+        """ retrieve the user corresponding to login (login or email),
+            and reset their password
+        """
+        inactive_users = self.search_count([('login', '=', login), ('active', '=', False)])
+        if inactive_users:
+            raise Exception(INACTIVE_EMAIL_WARNING)
         
-    #     return super().reset_password(login)
+        return super().reset_password(login)

@@ -28,6 +28,12 @@ TRUSTED_DEVICE_COOKIE = 'td_id'
 TRUSTED_USER_COOKIE = 'pre_uid'
 TRUSTED_DEVICE_AGE = 90*86400
 
+
+INCORRECT_EMAIL_WARNING = _('Your email was incorrect. Please try again.')
+INACTIVE_EMAIL_WARNING = _('This email address is no longer active. Please use a different account to log in.')
+WRONG_EMAIL_PASSWORD = _("Wrong email or password. Please try again.")
+WRONG_EMAIL_FORMAT = _('Wrong email format. Please try again.')
+
 _logger = logging.getLogger(__name__)
 
 
@@ -35,28 +41,28 @@ class AuthSignupHome(Home):
 
     @http.route('/web/login', type='http', auth="none")
     def web_login(self, redirect=None, **kw):
-    
+        
+        
         
         response = super().web_login(redirect, **kw)
   
         
         not_admin = response.qcontext.get('login', '') != 'admin'
         if not_admin and response.qcontext.get('login') and not tools.email_normalize(response.qcontext.get('login', '')):
-            response.qcontext['account_error'] = _('Wrong email format. Please try again.')
+            response.qcontext['account_error'] = WRONG_EMAIL_FORMAT
         
         elif response.qcontext.get('error') and not request.params.get('oauth_error'):
-            response.qcontext['error'] = _("Wrong email or password. Please try again.")
-            # response.qcontext['error'] = _('Your password was incorrect. Please try again.')
+            response.qcontext['error'] = WRONG_EMAIL_PASSWORD
             if response.qcontext.get('login'):
-                user_count = request.env['res.users'].sudo().search_count([('login', '=ilike', response.qcontext['login']),
-                                                                        ('login_date', '!=', False)])
+                user_count = request.env['res.users'].sudo().search_count([
+                                                        ('login', '=ilike', response.qcontext['login'])
+                                                        ('active', 'in', [True, False])
+                                                        ])
                 if not user_count:
-                    response.qcontext['account_error'] = _('Your email was incorrect. Please try again.')
-                    # Wrong email or password. Please try again.
-        # else:
-        #     response.qcontext['account_error'] = False
-        #     response.qcontext['error'] = False
-        
+                    response.qcontext['account_error'] = INCORRECT_EMAIL_WARNING
+                elif not user_count.active:
+                    response.qcontext['account_error'] = INACTIVE_EMAIL_WARNING
+                    
         
         if kw.get('remember'):
             name = _("%(browser)s on %(platform)s",
