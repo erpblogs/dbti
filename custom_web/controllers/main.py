@@ -54,7 +54,7 @@ class AuthSignupHome(Home):
         elif response.qcontext.get('error') and not request.params.get('oauth_error'):
             response.qcontext['error'] = WRONG_EMAIL_PASSWORD
             if response.qcontext.get('login'):
-                user_count = request.env['res.users'].sudo().search_count([
+                user_count = request.env['res.users'].sudo().search([
                                                         ('login', '=ilike', response.qcontext['login']),
                                                         ('active', 'in', [True, False])
                                                         ])
