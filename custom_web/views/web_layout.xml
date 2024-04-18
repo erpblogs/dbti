@@ -26,7 +26,7 @@
                             <label for="login" class="form-label">Email <span class="text-danger">*</span></label>
                             <input type="text" placeholder="Email" name="login"
                                 t-att-value="login"
-                                id="login"
+                                id="login" maxlength="100" 
                                 t-attf-class="form-control #{'form-control-sm' if form_small else ''}"
                                 required="required" autocomplete="login" autofocus="autofocus"
                                 autocapitalize="off" />
@@ -42,7 +42,7 @@
                                 name="password" id="password"
                                 t-attf-class="form-control #{'form-control-sm' if form_small else ''}"
                                 required="required" autocomplete="password"
-                                t-att-autofocus="'autofocus' if login else None" maxlength="4096" />
+                                t-att-autofocus="'autofocus' if login else None" maxlength="20" />
                         </div>
                         <p class="alert alert-danger" t-if="(error and not account_error)" role="alert">
                             <t t-esc="error" />
