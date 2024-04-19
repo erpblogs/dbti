@@ -33,3 +33,15 @@ class ResUsers(models.Model):
             raise Exception(INACTIVE_EMAIL_WARNING)
         
         return super().reset_password(login)
+    
+    
+    state = fields.Selection(selection_add=[('inactive', 'Inactive')])
+
+    def _compute_state(self):
+        for user in self:
+            if not user.active:
+                user.state = 'inactive' 
+            elif user.login_date:
+                user.state = 'active' 
+            else: 
+                user.state = 'new'
