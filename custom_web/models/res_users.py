@@ -22,6 +22,22 @@ INACTIVE_EMAIL_WARNING = _('This email address is no longer active. Please use a
 
 class ResUsers(models.Model):
     _inherit = 'res.users'
+    
+    state = fields.Selection(selection_add=[('inactive', 'Inactive')])
+    user_type = fields.Char(compute='_get_user_type', string="User Type")
+
+    def _get_user_type(self):
+        for r in self:
+            r.user_type = self.env.ref('base.group_user').name if r._is_internal() else self.env.ref('base.group_portal').name
+        
+    def _compute_state(self):
+        for user in self:
+            if not user.active:
+                user.state = 'inactive' 
+            elif user.login_date:
+                user.state = 'active' 
+            else: 
+                user.state = 'new'
 
 
     def reset_password(self, login):
@@ -33,15 +49,3 @@ class ResUsers(models.Model):
             raise Exception(INACTIVE_EMAIL_WARNING)
         
         return super().reset_password(login)
-    
-    
-    state = fields.Selection(selection_add=[('inactive', 'Inactive')])
-
-    def _compute_state(self):
-        for user in self:
-            if not user.active:
-                user.state = 'inactive' 
-            elif user.login_date:
-                user.state = 'active' 
-            else: 
-                user.state = 'new'
