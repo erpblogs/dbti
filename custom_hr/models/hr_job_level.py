@@ -5,12 +5,15 @@ class HrJobLevel(models.Model):
     Store Hr Level
     """
     _name = 'hr.job.level'
+    _inherit = ['mail.thread']
     _description = 'Hr Level'
     
     name = fields.Char('Job level', required=True)
     description = fields.Char('Description')
     level_no = fields.Integer('Level No')
     turn_around_time = fields.Float('Turn-Around Time')
+    company_id = fields.Many2one('res.company', string='Company', required=True, 
+                                 default=lambda self: self.env.company)
     
     
     
