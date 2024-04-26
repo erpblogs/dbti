@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit the existing menu view -->
+        <record id="hr_org_chart.menu_hr_employee_org_chart" model="ir.ui.menu">
+            <field name="name">Organization</field>
+        </record>
+        <!-- Inherit the existing menu action -->
+        <record id="hr_org_chart.action_hr_employee_org_chart" model="ir.actions.act_window">
+        	<field name="name">Organization</field>
+        </record>
+    </data>
+</odoo>
