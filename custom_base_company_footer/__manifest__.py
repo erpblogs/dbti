@@ -4,11 +4,11 @@
 {
     'name': 'Custom Base Company Footer',
     'version': '0.1',
-    'summary': 'Custom format for email and phone',
+    'summary': 'Custom display shortage Footer in "Company create" screen',
     'sequence': 10,
     'category': 'Hidden',
     'description': """ 
-    Custom format for email and phone
+    Custom display shortage Footer in "Company create" screen
     """,
     
     'depends': [
