@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit the existing company view -->
+		<record id="view_company_form" model="ir.ui.view">
+        	<field name="name">res.company.form</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//sheet[last()]" position="after">
+            		<div class="oe_chatter">
+						<field name="message_follower_ids"  widget="mail_followers"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+            	</xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
