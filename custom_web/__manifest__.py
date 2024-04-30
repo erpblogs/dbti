@@ -40,6 +40,7 @@ Long description of module's purpose
     'assets': {
         'web.assets_backend': [
             'custom_web/static/src/scss/web_styles.scss',
+            'custom_web/static/src/css/o_user_style.css',
         ],
         'web.assets_frontend': [
             # 'custom_web/static/src/scss/lib/custom_bootstrap.scss',

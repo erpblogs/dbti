@@ -34,6 +34,14 @@
             <field name="model">res.users</field>
             <field name="inherit_id" ref="base.view_users_form"/>
             <field name="arch" type="xml">
+            	<xpath expr="//div[hasclass('oe_title')]" position="replace">
+            		<div class="oe_title">
+            			<label for="name" string="User Name"/>
+            			<field name="name" placeholder="User Name" required="1" class="o_user_style"/>
+            			<label for="login" string="Email"/>
+            			<field name="login" placeholder="Email" class="o_user_style"/>
+            		</div>
+            	</xpath>
                 <xpath expr="//page[@name='access_rights']" position="attributes" >
                     <attribute name="invisible">1</attribute>
                 </xpath>
@@ -44,13 +52,13 @@
                             <field string="Default Company" name="company_id" context="{'user_preference': 0}"/>
                             <field string="Companies count" name="companies_count" invisible="1"/>
                         </group>
-
+                        
                         <group>
-                            <field name="user_type"></field>
-                        </group>
+                        	<field name="user_type"/>
+                        </group>>
                         <div>
                             <label for="groups_id" string="Group permission" />
-                            <field name="groups_id" nolabel="1" />
+                            <field name="groups_id" nolabel="1" class="o_user_style_group"/>
                         </div>
                     </page>
                 </xpath>
