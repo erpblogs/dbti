@@ -26,7 +26,7 @@ class SHrEmployee(models.Model):
 
     s_employee_id = fields.Char(string='Employee ID', readonly=True)
     s_biometrics_id = fields.Char(string='Biometrics ID', size=10, unique=True)
-    s_role_profile = fields.Char(string='Role profile', readonly=True)
+    s_role_profile = fields.One2many('res.users', 's_hr_res_user_id', string='Role profile', required=True)
     s_employee_status = fields.Selection(
         [('active', 'Active'), ('inactive', 'Inactive'), ('retire', 'Retire'), ('resign', 'Resign'),
          ('terminated', 'Terminated'), ('end_of_contract', 'End of contract'), ('on_hold', 'On hold')],
@@ -53,6 +53,8 @@ class SHrEmployee(models.Model):
         for rec in self:
             if rec.s_is_active:
                 rec.s_employee_status = 'active'
+                if rec.s_on_hold:
+                    rec.s_on_hold = False
             else:
                 rec.s_employee_status = 'inactive'
 
@@ -115,6 +117,12 @@ class SHrEmployee(models.Model):
             # Assign the full name to s_full_name
             rec.s_employee_id = employee_id
 
+    def create(self, vals):
+        role_profile = vals.get('s_role_profile')
+        if not role_profile:
+            raise ValidationError("The Role profile field is required.")
+        return super(SHrEmployee, self).create(vals)
+
     ### start Compensation and Benefits
 
     s_total_year_days = fields.Selection(
@@ -140,6 +148,9 @@ class SHrEmployee(models.Model):
                                          string='Mode of Payment')
     s_on_hold = fields.Boolean(string='On hold', default=False)
     s_minimum_take_home_as_percentage = fields.Boolean(string='Minimum Take Home as Percentage', default=False)
+    s_minimum_take_home_as_percentage_textbox = fields.Float(string='Enter Minimum Take Home as Percentage')
+    s_compensation_benefit_ids = fields.One2many('s.compensation.benefit', 's_hr_compensation_benefit_id',
+                                                 string='Other Compensation and Benefits')
 
     @api.onchange('s_total_year_days')
     def _onchange_s_total_year_days(self):
@@ -176,8 +187,24 @@ class SHrEmployee(models.Model):
         for rec in self:
             if rec.s_on_hold:
                 rec.s_employee_status = 'on_hold'
+                if rec.s_is_active:
+                    rec.s_is_active = False
             else:
                 rec.s_employee_status = 'active'
+
+    @api.onchange('s_minimum_take_home_as_percentage_textbox')
+    def _onchange_s_minimum_take_home_as_percentage_textbox(self):
+        for rec in self:
+            if rec.s_minimum_take_home_as_percentage_textbox:
+                rec.s_minimum_take_home = 0
+
+    @api.onchange('s_minimum_take_home')
+    def _onchange_s_minimum_take_home(self):
+        for rec in self:
+            if rec.s_minimum_take_home:
+                if rec.s_minimum_take_home_as_percentage:
+                    rec.s_minimum_take_home_as_percentage = 0
+                    rec.s_minimum_take_home_as_percentage_textbox = ""
 
     ### end Compensation and Benefits
 
@@ -227,11 +254,23 @@ class SHrEmployee(models.Model):
     s_current_address_postal_code = fields.Integer(string="Current Address Postal Code", size=5)
     s_permanent_address_postal_code = fields.Integer(string="Permanent Address Postal Code", size=5)
 
-    # s_contact_numbers = fields.One2many(string="Contact Numbers", size=20)
-    # s_valid_ids = fields.One2many(string="Valid IDs", size=20)
-    # s_family_members = fields.One2many(string="Family Members", size=20)
+    s_contact_numbers = fields.One2many('s.contact.number', 's_hr_contact_number_id', string="Contact Numbers")
+    s_valid_ids = fields.One2many('s.valid.ids', 's_hr_valid_id', string="Valid IDs")
+    s_family_members = fields.One2many('s.family.member', 's_hr_family_member', string="Family Members")
 
     # end Work Preferences and Attributes
+
+    # start Work History and Qualifications
+    s_education_ids = fields.One2many('s.education', 's_hr_education_id', string="Education")
+    s_external_work_history = fields.One2many('s.external.work.history', 's_hr_external_work_history_id',
+                                              string="External Work History")
+    s_internal_work_history = fields.One2many('s.internal.work.history', 's_hr_internal_work_history_id',
+                                              string="Internal Work History")
+    s_license_ids = fields.One2many('s.license', 's_hr_license_id', string="License")
+    s_trainings_development = fields.One2many('s.training.development', 's_hr_training_development_id',
+                                              string="Trainings & Development")
+
+    # end Work History and Qualifications
 
     @api.constrains('s_personal_email')
     def _check_s_personal_email(self):

@@ -1,0 +1,50 @@
+<odoo>
+    <data>
+        <record id="s_compensation_benefit_view_form" model="ir.ui.view">
+            <field name="name">s_compensation_benefit_view_form</field>
+            <field name="model">s.compensation.benefit</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="s_transaction_type" string="Transaction Type"/>
+                            <h1>
+                                <field name="s_transaction_type" placeholder="e.g. Odoo Inc." required="True"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="s_amount"/>
+                            <!--                            <group>-->
+                            <!--                                <field name="dbname"/>-->
+                            <!--                                <field name="level"/>-->
+                            <!--                                <field name="message"/>-->
+                            <!--                            </group>-->
+                            <!--                            <group>-->
+                            <!--                                <field name="s_shopee_id_order"/>-->
+                            <!--                                <field name="return_created" attrs="{'invisible':[('return_created', '=',False)]}"/>-->
+                            <!--                                <field name="s_error_token_shopee"-->
+                            <!--                                       attrs="{'invisible':[('s_error_token_shopee', '=',False)]}"/>-->
+                            <!--                                <field name="order_status"/>-->
+                            <!--                            </group>-->
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!--        <record id="s_sale_order_shopee_error_view_tree" model="ir.ui.view">-->
+        <!--            <field name="name">s_sale_order_shopee_error_view_tree</field>-->
+        <!--            <field name="model">s.sale.order.shopee.error</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <tree create="false" edit="false" delete="false">-->
+        <!--                    <field name="dbname" readonly="True"/>-->
+        <!--                    <field name="level" readonly="True"/>-->
+        <!--                    <field name="message" readonly="True"/>-->
+        <!--                    <field name="s_shopee_id_order" readonly="True"/>-->
+        <!--                    <field name="return_created" readonly="True"/>-->
+        <!--                    <field name="order_status" readonly="True"/>-->
+        <!--                    <field name="create_date" readonly="True"/>-->
+        <!--                </tree>-->
+        <!--            </field>-->
+        <!--        </record>-->
+    </data>
+</odoo>

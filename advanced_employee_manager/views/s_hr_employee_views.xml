@@ -52,7 +52,15 @@
                         <group>
                             <field name="s_employee_id"/>
                             <field name="s_biometrics_id"/>
-                            <field name="s_role_profile"/>
+                            <field mode="tree" name="s_role_profile">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="login"/>
+                                    <field name="lang"/>
+                                    <field name="login_date"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
                             <field name="company_id"/>
                             <field name="s_employee_status"/>
                             <field name="s_resigned_date"/>
@@ -69,7 +77,8 @@
                             <field name="s_job_level"/>
                             <field name="s_default_schedule"/>
                             <field name="s_location"/>
-                            <field mode="tree" name="s_project_project_ids" widget="project_one2many">
+                            <!--                            <field mode="tree" name="s_project_project_ids" widget="project_one2many">-->
+                            <field mode="tree" name="s_project_project_ids">
                                 <tree>
                                     <field name="line_type_id"/>
                                     <field name="name"/>
@@ -105,6 +114,14 @@
                             <field name="s_mode_of_payment"/>
                             <field name="s_on_hold"/>
                             <field name="s_minimum_take_home_as_percentage"/>
+                            <field name="s_minimum_take_home_as_percentage_textbox"
+                                   invisible="not s_minimum_take_home_as_percentage"/>
+                            <field mode="tree" name="s_compensation_benefit_ids">
+                                <tree>
+                                    <field name="s_transaction_type"/>
+                                    <field name="s_amount"/>
+                                </tree>
+                            </field>
                         </group>
                     </group>
                 </page>
@@ -165,6 +182,81 @@
                             <field name="s_is_widowed"/>
                             <field name="s_current_address_postal_code"/>
                             <field name="s_permanent_address_postal_code"/>
+                            <!--                            <field mode="tree" name="s_contact_numbers" widget="contactnumber_one2many">-->
+                            <field mode="tree" name="s_contact_numbers">
+                                <tree>
+                                    <field name="s_contact_number"/>
+                                </tree>
+                            </field>
+                            <!--                            <field mode="tree" name="s_valid_ids" widget="valid_one2many">-->
+                            <field mode="tree" name="s_valid_ids">
+                                <tree>
+                                    <field name="s_valid_id"/>
+                                </tree>
+                            </field>
+                            <!--                            <field mode="tree" name="s_family_members" widget="family_one2many">-->
+                            <field mode="tree" name="s_family_members">
+                                <tree>
+                                    <field name="s_family_member"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                </page>
+                <!--                end page Work Preferences and Attributes-->
+
+                <!--                start page Work Preferences and Attributes-->
+                <page name="work_history_and_qualifications" string="Work History and Qualifications">
+                    <group>
+                        <group>
+                            <!--                            <field mode="tree" name="s_education_ids" widget="education_one2many">-->
+                            <field mode="tree" name="s_education_ids">
+                                <tree>
+                                    <field name="s_school_name"/>
+                                    <field name="s_level_of_education"/>
+                                    <field name="s_duration_from"/>
+                                    <field name="s_duration_to"/>
+                                    <field name="s_major"/>
+                                </tree>
+                            </field>
+
+                            <!--                            <field mode="tree" name="s_external_work_history" widget="external_one2many">-->
+                            <field mode="tree" name="s_external_work_history">
+                                <tree>
+                                    <field name="s_company_name"/>
+                                    <field name="s_position"/>
+                                    <field name="s_duration_from"/>
+                                    <field name="s_duration_to"/>
+                                    <field name="s_major"/>
+                                </tree>
+                            </field>
+
+                            <!--                            <field mode="tree" name="s_internal_work_history" widget="internal_one2many">-->
+                            <field mode="tree" name="s_internal_work_history">
+                                <tree>
+                                    <field name="s_company_name"/>
+                                    <field name="s_position"/>
+                                    <field name="s_duration_from"/>
+                                    <field name="s_duration_to"/>
+                                    <field name="s_major"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group>
+                            <!--                            <field mode="tree" name="s_license_ids" widget="license_one2many">-->
+                            <field mode="tree" name="s_license_ids">
+                                <tree>
+                                    <field name="s_license"/>
+                                    <field name="s_license_id"/>
+                                </tree>
+                            </field>
+
+                            <!--                            <field mode="tree" name="s_trainings_development" widget="trainings_one2many">-->
+                            <field mode="tree" name="s_trainings_development">
+                                <tree>
+                                    <field name="s_training_development"/>
+                                </tree>
+                            </field>
                         </group>
                     </group>
                 </page>
@@ -174,6 +266,10 @@
             <!--    start ẩn nhũng field không cần thiết-->
             <xpath expr="//page[@name='skills_resume']" position="attributes">
                 <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="required">0</attribute>
             </xpath>
 
 
