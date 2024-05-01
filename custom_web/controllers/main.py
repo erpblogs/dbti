@@ -26,8 +26,8 @@ from odoo.addons.auth_signup.controllers.main import AuthSignupHome
 
 TRUSTED_DEVICE_COOKIE = 'td_id'
 TRUSTED_USER_COOKIE = 'pre_uid'
-TRUSTED_DEVICE_AGE = 90*86400
-
+REMEMBER_COOKIE = 'remember'
+TRUSTED_DEVICE_AGE = 90 * 86400
 
 INCORRECT_EMAIL_WARNING = _('Your email was incorrect. Please try again.')
 INACTIVE_EMAIL_WARNING = _('This email address is no longer active. Please use a different account to log in.')
@@ -41,34 +41,31 @@ class AuthSignupHome(Home):
 
     @http.route('/web/login', type='http', auth="none")
     def web_login(self, redirect=None, **kw):
-        
-        
-        
+
         response = super().web_login(redirect, **kw)
-  
-        
+
         not_admin = response.qcontext.get('login', '') != 'admin'
-        if not_admin and response.qcontext.get('login') and not tools.email_normalize(response.qcontext.get('login', '')):
+        if not_admin and response.qcontext.get('login') and not tools.email_normalize(
+                response.qcontext.get('login', '')):
             response.qcontext['account_error'] = WRONG_EMAIL_FORMAT
-        
+
         elif response.qcontext.get('error') and not request.params.get('oauth_error'):
             response.qcontext['error'] = WRONG_EMAIL_PASSWORD
             if response.qcontext.get('login'):
                 user_count = request.env['res.users'].sudo().search([
-                                                        ('login', '=ilike', response.qcontext['login']),
-                                                        ('active', 'in', [True, False])
-                                                        ])
+                    ('login', '=ilike', response.qcontext['login']),
+                    ('active', 'in', [True, False])
+                ])
                 if not user_count:
                     response.qcontext['account_error'] = INCORRECT_EMAIL_WARNING
                 elif not user_count.active:
                     response.qcontext['account_error'] = INACTIVE_EMAIL_WARNING
-                    
-        
+
         if kw.get('remember'):
             name = _("%(browser)s on %(platform)s",
-                browser=request.httprequest.user_agent.browser.capitalize(),
-                platform=request.httprequest.user_agent.platform.capitalize(),
-            )
+                     browser=request.httprequest.user_agent.browser.capitalize(),
+                     platform=request.httprequest.user_agent.platform.capitalize(),
+                     )
 
             if request.geoip.city.name:
                 name += f" ({request.geoip.city.name}, {request.geoip.country_name})"
@@ -80,8 +77,20 @@ class AuthSignupHome(Home):
                 max_age=TRUSTED_DEVICE_AGE,
                 httponly=True,
                 samesite='Lax',
-                
+
             )
+
+            # start thêm remember vào coockies
+            response.set_cookie(
+                key=REMEMBER_COOKIE,
+                value=kw.get('remember'),
+                max_age=TRUSTED_DEVICE_AGE,
+                httponly=True,
+                samesite='Lax',
+
+            )
+            # end thêm remember vào coockies
+
             if request.session.uid:
                 response.set_cookie(
                     key=TRUSTED_USER_COOKIE,
@@ -90,12 +99,14 @@ class AuthSignupHome(Home):
                     httponly=True,
                     samesite='Lax',
                 )
-            
+
             # Crapy workaround for unupdatable Odoo Mobile App iOS (Thanks Apple :@)
             request.session.touch()
-            
+        else:
+            response.delete_cookie(REMEMBER_COOKIE)
+
         if not request.session.uid:
-            
+
             cookies = request.httprequest.cookies
             pre_uid = cookies.get(TRUSTED_USER_COOKIE)
             user = None
@@ -104,20 +115,22 @@ class AuthSignupHome(Home):
             except:
                 pass
             key = cookies.get(TRUSTED_DEVICE_COOKIE)
+            remember = cookies.get(REMEMBER_COOKIE)
             if key and user:
                 user_match = request.env['auth_totp.device']._check_credentials_for_uid(
                     scope="browser", key=key, uid=user.id)
                 if user_match:
-                    # request.session.finalize(request.env)
-                    # kw['login'] = user.login
-                    response.qcontext['login'] = user.login
-                    response.qcontext['remember'] = True
-                
+                    if remember:
+                        # request.session.finalize(request.env)
+                        # kw['login'] = user.login
+                        response.qcontext['login'] = user.login
+                        response.qcontext['remember'] = True
+
         return response
-    
+
 
 class CustomAuthSignup(AuthSignupHome):
-    
+
     @http.route('/web/reset_password', type='http', auth='public', website=True, sitemap=False)
     def web_auth_reset_password(self, *args, **kw):
         qcontext = self.get_auth_signup_qcontext()
@@ -150,7 +163,8 @@ class CustomAuthSignup(AuthSignupHome):
                 qcontext['error'] = str(e)
 
         elif 'signup_email' in qcontext:
-            user = request.env['res.users'].sudo().search([('email', '=', qcontext.get('signup_email')), ('state', '!=', 'new')], limit=1)
+            user = request.env['res.users'].sudo().search(
+                [('email', '=', qcontext.get('signup_email')), ('state', '!=', 'new')], limit=1)
             if user:
                 return request.redirect('/web/login?%s' % url_encode({'login': user.login, 'redirect': '/web'}))
 
