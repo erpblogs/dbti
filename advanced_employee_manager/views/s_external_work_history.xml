@@ -1,0 +1,34 @@
+<odoo>
+    <data>
+        <record id="s_external_work_history_view_form" model="ir.ui.view">
+            <field name="name">s_external_work_history_view_form</field>
+            <field name="model">s.external.work.history</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="s_company_name"/>
+                            <h1>
+                                <field name="s_company_name" placeholder="e.g. Odoo Inc."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="s_position"/>
+                            </group>
+                            <group>
+                                <field name="s_duration_from" string="Duration" widget="daterange"
+                                       options='{"end_date_field": "s_duration_to", "always_range": "1"}'/>
+                                <field name="s_duration_to" invisible="1" required="s_duration_from"/>
+
+                            </group>
+                            <label for="s_major" string="Major"/>
+                            <field name="s_major" string="test"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>
