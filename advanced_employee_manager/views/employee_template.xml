@@ -1,0 +1,64 @@
+<odoo>
+    <data>
+        <template id="template_config_fullname_emp">
+            <t t-call="web.layout">
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                <link rel="stylesheet"
+                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
+                <div class="container_emp">
+                    <div id="left" style="width: 300px; min-height: 400px; margin: 20px; border: solid 2px #ccc;">
+                        <div class="list" draggable="true">
+                            <i class="fa fa-list-ul" aria-hidden="true"></i>
+                            Item 1
+                        </div>
+                        <div class="list" draggable="true">
+                            <i class="fa fa-list-ul" aria-hidden="true"></i>
+                            Item 2
+                        </div>
+                        <div class="list" draggable="true">
+                            <i class="fa fa-list-ul" aria-hidden="true"></i>
+                            Item 3
+                        </div>
+                        <div class="list" draggable="true">
+                            <i class="fa fa-list-ul" aria-hidden="true"></i>
+                            Item 4
+                        </div>
+                        <div class="list" draggable="true">
+                            <i class="fa fa-list-ul" aria-hidden="true"></i>
+                            Item 5
+                        </div>
+                    </div>
+                    <div id="right" style="width: 300px; min-height: 400px; margin: 20px; border: solid 2px #ccc;"></div>
+                </div>
+                <script>
+                    let lists = document.getElementsByClassName("list");
+                    let right=document.getElementById("right");
+                    let left=document.getElementById("left");
+
+                    for(list of lists){
+                    list.addEventListener("dragstart",function(e){
+                    let selected = e.target;
+                    right.addEventListener("dragover",function(e){
+                    e.preventDefault();
+                    });
+                    right.addEventListener("drop",function(e){
+                    right.appendChild(selected);
+                    selected=null;
+                    });
+
+                    left.addEventListener("dragover",function(e){
+                    e.preventDefault();
+                    });
+                    left.addEventListener("drop",function(e){
+                    left.appendChild(selected);
+                    selected=null;
+                    });
+
+                    });
+                    }
+                </script>
+            </t>
+        </template>
+    </data>
+</odoo>
