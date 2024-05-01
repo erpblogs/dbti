@@ -14,6 +14,7 @@
         # 'security/hr_security.xml',
         'security/ir.model.access.csv',
         # 'data/cron.xml',
+        'views/hr_job_views.xml',
         'views/hr_job_level_views.xml',
         'views/hr_employee_views.xml',
     ],
