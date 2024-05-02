@@ -10,7 +10,7 @@ class SHrEmployee(models.Model):
     s_last_name = fields.Char(string='Last name', size=100, required=True)
     # s_first_name = fields.Char(string='First name', size=100, required=True)
     s_middle_name = fields.Char(string='Middle name', size=100)
-    s_full_name = fields.Char(string='Full name', readonly=True)
+    s_full_name = fields.Char(string='Full name', compute='_compute_full_name')
     # s_birthdate = fields.Datetime(string='Birthdate', required=True)
     s_generation = fields.Selection(([]), string='Generation')
     s_age = fields.Integer(string='Age', compute='_compute_age', store=True)
@@ -58,8 +58,8 @@ class SHrEmployee(models.Model):
             else:
                 rec.s_employee_status = 'inactive'
 
-    @api.onchange('s_last_name', 'name', 's_middle_name', 's_suffix')
-    def _onchange_full_name(self):
+    @api.depends('s_last_name', 'name', 's_middle_name', 's_suffix')
+    def _compute_full_name(self):
         for rec in self:
             ir_config = self.env['ir.config_parameter'].sudo()
             last_name_in_fullname = ir_config.get_param('advanced_employee_manager.s_last_name_in_fullname')
@@ -84,6 +84,10 @@ class SHrEmployee(models.Model):
 
             # Assign the full name to s_full_name
             rec.s_full_name = full_name
+
+    @api.onchange('s_last_name', 'name', 's_middle_name', 's_suffix')
+    def _onchange_full_name(self):
+        self._compute_full_name()
 
     @api.onchange('birthday', 's_full_name', 's_suffix')
     def _onchange_employee_id(self):
