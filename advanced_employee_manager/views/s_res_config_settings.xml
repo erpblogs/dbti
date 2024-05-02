@@ -1,0 +1,86 @@
+<odoo>
+    <record id="res_config_setting_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/app" position="inside">
+                <div id="fullname_employee_config" class="app_settings_block">
+                    <h2>Config Fullname Employee</h2>
+                    <div class="row mt16 o_settings_container" name="config_fullname">
+                        <div class="o_setting_box col-12 col-lg-6 o_searchable_setting">
+                            <div class="o_setting_right_pane mt8">
+                                <div>
+                                    <label for="s_last_name_in_fullname"/>
+                                    <div>
+                                        <field name="s_last_name_in_fullname"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="s_first_name_in_fullname"/>
+                                    <div>
+                                        <field name="s_first_name_in_fullname"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="o_setting_box col-12 col-lg-6 o_searchable_setting">
+                            <div class="o_setting_right_pane mt8">
+                                <div>
+                                    <label for="s_middle_name_in_fullname"/>
+                                    <div>
+                                        <field name="s_middle_name_in_fullname"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="s_suffix_in_fullname"/>
+                                    <div>
+                                        <field name="s_suffix_in_fullname"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="config_employee_id" class="app_settings_block">
+                    <h2>Config Employee Id</h2>
+                    <div class="row mt16 o_settings_container" name="config_employee_id">
+                        <div class="o_setting_box col-12 col-lg-6 o_searchable_setting">
+                            <div class="o_setting_right_pane mt8">
+                                <div>
+                                    <label for="s_suffix_in_emp_id"/>
+                                    <div>
+                                        <field name="s_suffix_in_emp_id"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="s_bod_year_in_emp_id"/>
+                                    <div>
+                                        <field name="s_bod_year_in_emp_id"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="o_setting_box col-12 col-lg-6 o_searchable_setting">
+                            <div class="o_setting_right_pane mt8">
+                                <div>
+                                    <label for="s_bod_month_in_emp_id"/>
+                                    <div>
+                                        <field name="s_bod_month_in_emp_id"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="s_fullname_in_emp_id"/>
+                                    <div>
+                                        <field name="s_fullname_in_emp_id"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

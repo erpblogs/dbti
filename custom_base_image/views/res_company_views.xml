@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit the existing company view -->
+		<record id="view_company_form_inherit" model="ir.ui.view">
+        	<field name="name">res.company.form.inherit</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='logo']" position="replace">
+            		<field name="custom_image_1920" widget="image" class="oe_avatar"/>
+            	</xpath>
+            </field>
+        </record>
+        
+        <record id="view_company_tree_inherit" model="ir.ui.view">
+        	<field name="name">res.company.tree.inherit</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_tree"/>
+            <field name="arch" type="xml">
+            	<field name="partner_id" position="attributes">
+            		<attribute name="optional">hide</attribute>
+            	</field>
+            </field>
+        </record>
+    </data>
+</odoo>

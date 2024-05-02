@@ -14,9 +14,9 @@ class HrJobLevel(models.Model):
     turn_around_time = fields.Float('Turn-Around Time')
     company_id = fields.Many2one('res.company', string='Company', required=True, 
                                  default=lambda self: self.env.company)
-    
-    
-    
+    department_id = fields.Many2one('hr.department', string="Department", check_company=True)
+
+
     _sql_constraints = [
         ('check_turn_around_time', 'CHECK(turn_around_time >= 0)', 'The Turn-Around Time should be positive.'),
         ('check_level_no', 'CHECK(level_no >= 0)', 'Level No should be positive.'),

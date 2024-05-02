@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_s_compensation_benefit,access_s_compensation_benefit,model_s_compensation_benefit,,1,1,1,1
+access_s_contact_number,access_s_contact_number,model_s_contact_number,,1,1,1,1
+access_s_valid_ids,access_s_valid_ids,model_s_valid_ids,,1,1,1,1
+access_s_family_member,access_s_family_member,model_s_family_member,,1,1,1,1
+access_s_license,access_s_license,model_s_license,,1,1,1,1
+access_s_education,access_s_education,model_s_education,,1,1,1,1
+access_s_external_work_history,access_s_external_work_history,model_s_external_work_history,,1,1,1,1
+access_s_internal_work_history,access_s_internal_work_history,model_s_internal_work_history,,1,1,1,1
+access_s_training_development,access_s_training_development,model_s_training_development,,1,1,1,1

@@ -1,0 +1,55 @@
+<odoo>
+    <data>
+        <record id="s_res_config_fullname_employee" model="ir.ui.view">
+            <field name="name">config.fullname.employee.kanban</field>
+            <field name="model">s.res.config.fullname.employee</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="s_last_name_in_fullname"/>
+                    <field name="s_first_name_in_fullname"/>
+                    <field name="s_middle_name_in_fullname"/>
+                    <field name="s_suffix_in_fullname"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''}">
+                                <div class="o_kanban_card_header d-flex align-items-baseline gap-1">
+                                    <p>11111111111111111111111111111</p>
+                                    <field name="s_last_name_in_fullname"/>
+                                    <field name="s_first_name_in_fullname"/>
+                                    <field name="s_middle_name_in_fullname"/>
+                                    <field name="s_suffix_in_fullname"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="hr_test_view_tree" model="ir.ui.view">
+            <field name="name">s.res.config.fullname.employee.view.tree</field>
+            <field name="model">s.res.config.fullname.employee</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <!-- Add your fields here -->
+                    <field name="s_last_name_in_fullname"/>
+                    <field name="s_first_name_in_fullname"/>
+                    <field name="s_middle_name_in_fullname"/>
+                    <field name="s_suffix_in_fullname"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_res_config_fullname_employee" model="ir.actions.act_window">
+            <field name="name">Config Fullname Employee</field>
+            <field name="res_model">s.res.config.fullname.employee</field>
+            <field name="view_mode">kanban,tree</field>
+        </record>
+
+        <menuitem name="Config Fullname Employee" id="menuitem_res_config_fullname_employee"
+                  parent="hr.menu_human_resources_configuration"
+                  action="action_res_config_fullname_employee"
+                  sequence="3"/>
+    </data>
+
+</odoo>
