@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+        <record id="s_family_member_view_form" model="ir.ui.view">
+            <field name="name">s_family_member_view_form</field>
+            <field name="model">s.family.member</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="s_family_member" string="Family Members"/>
+                            <h1>
+                                <field name="s_family_member" placeholder="e.g. Odoo Inc." required="True"/>
+                            </h1>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

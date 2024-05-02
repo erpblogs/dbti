@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="s_hr_employee_form_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='hr_settings']/group" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='hr_settings']/group" position="before">
+                <group>
+                    <group>
+                        <field name="user_id" string="Related User"
+                               domain="[('company_ids', 'in', company_id), ('share', '=', False)]"
+                               context="{'default_create_employee_id': id}" widget="many2one_avatar_user"/>
+
+                    </group>
+                </group>
+            </xpath>
+
+            <xpath expr="//div[@class='oe_title mw-75 ps-0 pe-2']" position="after">
+                <group class="employee_detail" style="width:92%">
+                    <group>
+                        <field name="s_last_name"/>
+                        <field name="s_first_name"/>
+                        <field name="s_middle_name"/>
+                        <field name="s_full_name"/>
+                        <field name="birthday" string="Birthdate" required="True"/>
+                        <field name="s_generation"/>
+                        <field name="s_age"/>
+                        <field name="gender" required="True"/>
+                    </group>
+                    <group>
+                        <field name="s_suffix"/>
+                        <field name="s_nick_name"/>
+                        <field name="s_maiden_name"/>
+                        <field name="s_personal_email"/>
+                        <field name="s_corporate_email"/>
+                        <field name="company_id" string="Business name"/>
+                        <field name="parent_id" string="Manager"/>
+                        <field name="job_level_id"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <xpath expr="//page[@name='hr_settings']" position="before">
+                <!--                start page personal-->
+                <page name="personal" string="Personal">
+                    <group>
+                        <group>
+                            <field name="s_employee_id"/>
+                            <field name="s_biometrics_id"/>
+                            <field mode="tree" name="s_role_profile">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="login"/>
+                                    <field name="lang"/>
+                                    <field name="login_date"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                            <field name="company_id"/>
+                            <field name="s_employee_status"/>
+                            <field name="s_resigned_date"/>
+                            <field name="s_department"/>
+                            <field name="s_date_hired"/>
+                            <field name="s_date_of_separation"/>
+                            <field name="s_date_of_regularization"/>
+                            <field name="s_month_in_service"/>
+                            <field name="s_years_in_service"/>
+                            <!--                            <field name="id"/>-->
+                        </group>
+                        <group>
+                            <field name="s_position_title"/>
+                            <field name="s_job_level"/>
+                            <field name="s_default_schedule"/>
+                            <field name="s_location"/>
+                            <!--                            <field mode="tree" name="s_project_project_ids" widget="project_one2many">-->
+                            <field mode="tree" name="s_project_project_ids">
+                                <tree>
+                                    <field name="line_type_id"/>
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                    <field name="date_start"/>
+                                    <field name="date"/>
+                                </tree>
+                            </field>
+                            <field name="s_is_active"/>
+                        </group>
+                    </group>
+                </page>
+                <!--                end page personal-->
+
+                <!--                start page compensation_and_benefits-->
+                <page name="compensation_and_benefits" string="Compensation and Benefits">
+                    <group>
+                        <group>
+                            <field name="s_total_year_days"/>
+                            <field name="s_is_other" invisible="1"/>
+                            <field name="s_other" invisible="not s_is_other"/>
+                            <field name="s_rate_type"/>
+                            <field name="s_monthly_rate"/>
+                            <field name="s_daily_rate"/>
+                            <field name="s_hourly_rate"/>
+                            <field name="s_payroll_schedule"/>
+                            <!--                            <field name="id"/>-->
+                        </group>
+                        <group>
+                            <!--                            <field name="s_rate_classification"/>-->
+                            <field name="s_minimum_take_home"/>
+                            <field name="s_cost_center"/>
+                            <field name="s_mode_of_payment"/>
+                            <field name="s_on_hold"/>
+                            <field name="s_minimum_take_home_as_percentage"/>
+                            <field name="s_minimum_take_home_as_percentage_textbox"
+                                   invisible="not s_minimum_take_home_as_percentage"/>
+                            <field mode="tree" name="s_compensation_benefit_ids">
+                                <tree>
+                                    <field name="s_transaction_type"/>
+                                    <field name="s_amount"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                </page>
+                <!--                end page compensation_and_benefits-->
+
+                <!--                start page Government IDs and Tax Information-->
+                <page name="government_ids_and_tax_information" string="Government IDs and Tax Information">
+                    <group>
+                        <group>
+                            <!--                            <field name="s_employee_id"/>-->
+                            <field name="s_sss_number"/>
+                            <field name="s_hdmf_number"/>
+                            <field name="s_phic_number"/>
+                            <field name="s_tin"/>
+                            <field name="s_rdo_code"/>
+                            <field name="s_sss_mode"/>
+                            <field name="s_hdmf_mode"/>
+                            <!--                            <field name="id"/>-->
+                        </group>
+                        <group>
+                            <!--                            <field name="s_rate_classification"/>-->
+                            <field name="s_phic_mode"/>
+                            <field name="s_whtax_mode"/>
+                            <field name="s_sss_manual"/>
+                            <field name="s_hdmf_manual"/>
+                            <field name="s_sss_frequency"/>
+                            <field name="s_hdmf_frequency"/>
+                            <field name="s_phic_frequency"/>
+                            <field name="s_whtax_frequency"/>
+                        </group>
+                    </group>
+                </page>
+                <!--                end page Government IDs and Tax Information-->
+
+                <!--                start page Work Preferences and Attributes-->
+                <page name="work_preferences_and_attributes" string="Work Preferences and Attributes">
+                    <group>
+                        <group>
+                            <field name="s_employee_id"/>
+                            <field name="s_part_time_only"/>
+                            <field name="s_attendance_base"/>
+                            <field name="s_ignore_late"/>
+                            <field name="s_ignore_undertime"/>
+                            <field name="s_ignore_nightdiff"/>
+                            <field name="s_no_hours"/>
+                            <field name="s_birth_place"/>
+                            <field name="s_religion"/>
+                            <field name="s_nationality"/>
+                            <field name="s_blood_type"/>
+                            <field name="s_civil_status"/>
+                            <!--                            <field name="id"/>-->
+                        </group>
+                        <group>
+                            <!--                            <field name="s_rate_classification"/>-->
+                            <field name="s_spouse_name"/>
+                            <field name="s_current_address"/>
+                            <field name="s_is_solo_parent"/>
+                            <field name="s_is_widowed"/>
+                            <field name="s_current_address_postal_code"/>
+                            <field name="s_permanent_address_postal_code"/>
+                            <!--                            <field mode="tree" name="s_contact_numbers" widget="contactnumber_one2many">-->
+                            <field mode="tree" name="s_contact_numbers">
+                                <tree>
+                                    <field name="s_contact_number"/>
+                                </tree>
+                            </field>
+                            <!--                            <field mode="tree" name="s_valid_ids" widget="valid_one2many">-->
+                            <field mode="tree" name="s_valid_ids">
+                                <tree>
+                                    <field name="s_valid_id"/>
+                                </tree>
+                            </field>
+                            <!--                            <field mode="tree" name="s_family_members" widget="family_one2many">-->
+                            <field mode="tree" name="s_family_members">
+                                <tree>
+                                    <field name="s_family_member"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                </page>
+                <!--                end page Work Preferences and Attributes-->
+
+                <!--                start page Work Preferences and Attributes-->
+                <page name="work_history_and_qualifications" string="Work History and Qualifications">
+                    <group>
+                        <group>
+                            <!--                            <field mode="tree" name="s_education_ids" widget="education_one2many">-->
+                            <field mode="tree" name="s_education_ids">
+                                <tree>
+                                    <field name="s_school_name"/>
+                                    <field name="s_level_of_education"/>
+                                    <field name="s_duration_from"/>
+                                    <field name="s_duration_to"/>
+                                    <field name="s_major"/>
+                                </tree>
+                            </field>
+
+                            <!--                            <field mode="tree" name="s_external_work_history" widget="external_one2many">-->
+                            <field mode="tree" name="s_external_work_history">
+                                <tree>
+                                    <field name="s_company_name"/>
+                                    <field name="s_position"/>
+                                    <field name="s_duration_from"/>
+                                    <field name="s_duration_to"/>
+                                    <field name="s_major"/>
+                                </tree>
+                            </field>
+
+                            <!--                            <field mode="tree" name="s_internal_work_history" widget="internal_one2many">-->
+                            <field mode="tree" name="s_internal_work_history">
+                                <tree>
+                                    <field name="s_company_name"/>
+                                    <field name="s_position"/>
+                                    <field name="s_duration_from"/>
+                                    <field name="s_duration_to"/>
+                                    <field name="s_major"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group>
+                            <!--                            <field mode="tree" name="s_license_ids" widget="license_one2many">-->
+                            <field mode="tree" name="s_license_ids">
+                                <tree>
+                                    <field name="s_license"/>
+                                    <field name="s_license_id"/>
+                                </tree>
+                            </field>
+
+                            <!--                            <field mode="tree" name="s_trainings_development" widget="trainings_one2many">-->
+                            <field mode="tree" name="s_trainings_development">
+                                <tree>
+                                    <field name="s_training_development"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </group>
+                </page>
+                <!--                end page Work Preferences and Attributes-->
+            </xpath>
+
+            <!--    start ẩn nhũng field không cần thiết-->
+            <xpath expr="//page[@name='skills_resume']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="required">0</attribute>
+            </xpath>
+
+
+            <xpath expr="//page[@name='public']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='personal_information']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//div[@class='oe_title mw-75 ps-0 pe-2']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <!--            <xpath expr="//field[@name='name']" position="attributes">-->
+            <!--                <attribute name="invisible">1</attribute>-->
+            <!--            </xpath>-->
+            <!--            <xpath expr="//field[@name='job_title']" position="attributes">-->
+            <!--                <attribute name="invisible">1</attribute>-->
+            <!--            </xpath>-->
+            <xpath expr="//field[@name='mobile_phone']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//sheet/group" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='work_phone']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='work_email']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='department_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='job_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!--            <xpath expr="//field[@name='parent_id']" position="attributes">-->
+            <!--                <attribute name="invisible">1</attribute>-->
+            <!--            </xpath>-->
+
+            <xpath expr="//field[@name='coach_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="s_hr_employee_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.tree.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='work_phone']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='work_email']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='activity_ids']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='activity_date_deadline']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='department_id']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='job_id']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="s_full_name"/>
+                <field name="gender"/>
+                <field name="s_rate_type"/>
+                <field name="s_payroll_schedule"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="s_hr_kanban_view_employees_inherit" model="ir.ui.view">
+        <field name="name">s.hr.employee.kanban.view.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_kanban_details']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//div[@class ='oe_kanban_details']" position="before">
+                <div class="oe_kanban_details">
+                    <div class="o_kanban_record_top">
+                        <div class="o_kanban_record_headings">
+                            <strong class="o_kanban_record_title">
+                                <field name="s_full_name" placeholder="Employee's Name"/>
+                            </strong>
+                            <span t-if="record.gender" class="o_kanban_record_subtitle">
+                                <field name="gender"/>
+                            </span>
+                        </div>
+                    </div>
+                    <ul>
+                        <li t-if="record.s_rate_type" class="o_text_overflow">
+                            <t t-if="record.s_rate_type.raw_value">
+                                Rate Type:
+                            </t>
+                            <field name="s_rate_type"/>
+                        </li>
+                        <li t-if="record.s_payroll_schedule" class="o_force_ltr">
+                            <t t-if="record.s_payroll_schedule.raw_value">
+                                Payroll Schedule:
+                            </t>
+                            <field name="s_payroll_schedule"/>
+                        </li>
+                    </ul>
+                </div>
+            </xpath>
+            <!-- Các đoạn mã khác -->
+        </field>
+    </record>
+</odoo>
