@@ -26,7 +26,7 @@
                         <field name="s_last_name"/>
                         <field name="name" string="First name"/>
                         <field name="s_middle_name"/>
-                        <field name="s_full_name"/>
+                        <field name="s_full_name" readonly="1" force_save="1"/>
                         <field name="birthday" string="Birthdate" required="True"/>
                         <field name="s_generation"/>
                         <field name="s_age"/>
@@ -268,9 +268,9 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
 
-<!--            <xpath expr="//field[@name='name']" position="attributes">-->
-<!--                <attribute name="required">0</attribute>-->
-<!--            </xpath>-->
+            <!--            <xpath expr="//field[@name='name']" position="attributes">-->
+            <!--                <attribute name="required">0</attribute>-->
+            <!--            </xpath>-->
 
 
             <xpath expr="//page[@name='public']" position="attributes">
