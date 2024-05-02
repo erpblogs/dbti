@@ -274,7 +274,7 @@ class SHrEmployee(models.Model):
 
     @api.constrains('s_personal_email')
     def _check_s_personal_email(self):
-        pattern = "[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]+"
+        pattern = "[a-zA-Z0-9._-]+@[a-zA-Z]+\.[a-zA-Z]+"
         for record in self:
             if record.s_personal_email:
                 if not re.match(pattern, record.s_personal_email):
@@ -288,7 +288,7 @@ class SHrEmployee(models.Model):
 
     @api.constrains('s_corporate_email')
     def _check_s_corporate_email(self):
-        pattern = "[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]+"
+        pattern = "[a-zA-Z0-9._-]+@[a-zA-Z]+\.[a-zA-Z]+"
         for record in self:
             if record.s_corporate_email:
                 if not re.match(pattern, record.s_corporate_email):
