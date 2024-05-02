@@ -14,6 +14,9 @@
     'depends': [
         'base','mail',
     ],
+    'data':[
+        'views/res_users_views.xml',
+    ],
     'auto_install': False,
     'license': '',
 }
