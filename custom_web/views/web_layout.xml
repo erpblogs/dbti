@@ -85,7 +85,7 @@
             <t t-set="disable_footer">1</t>
         </xpath>
 
-        <xpath expr="//form/input[@name='csrf_token']" position="before">
+        <xpath expr="//div[hasclass('mb-3', 'field-login')]" position="before">
             <div class="form-title">
                 <h3>Forgot Password</h3>
             </div>
@@ -96,7 +96,7 @@
 
         <xpath expr="//form//div[hasclass('field-login')]" position="replace">
             <div class="form-group field-login">
-                <label for="login">Email Address <span class="text-danger">*</span></label>
+                <label for="login">Email <span class="text-danger">*</span></label>
                 <div class="input-fields">
                     <input type="text" name="login" t-att-value="login" id="login" class="form-control"
                            placeholder="email@example.com"
