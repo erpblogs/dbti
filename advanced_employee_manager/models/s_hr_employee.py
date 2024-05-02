@@ -8,7 +8,7 @@ class SHrEmployee(models.Model):
     _inherit = 'hr.employee'
 
     s_last_name = fields.Char(string='Last name', size=100, required=True)
-    s_first_name = fields.Char(string='First name', size=100, required=True)
+    # s_first_name = fields.Char(string='First name', size=100, required=True)
     s_middle_name = fields.Char(string='Middle name', size=100)
     s_full_name = fields.Char(string='Full name', readonly=True)
     # s_birthdate = fields.Datetime(string='Birthdate', required=True)
@@ -58,7 +58,7 @@ class SHrEmployee(models.Model):
             else:
                 rec.s_employee_status = 'inactive'
 
-    @api.onchange('s_last_name', 's_first_name', 's_middle_name', 's_suffix')
+    @api.onchange('s_last_name', 'name', 's_middle_name', 's_suffix')
     def _onchange_full_name(self):
         for rec in self:
             ir_config = self.env['ir.config_parameter'].sudo()
@@ -69,7 +69,7 @@ class SHrEmployee(models.Model):
             # Create a list of tuples, each containing a field and its order
             fields_and_orders = [
                 (rec.s_last_name, last_name_in_fullname),
-                (rec.s_first_name, first_name_in_fullname),
+                (rec.name, first_name_in_fullname),
                 (rec.s_middle_name, middle_name_in_fullname),
                 (rec.s_suffix, suffix_in_fullname)
             ]
@@ -117,11 +117,11 @@ class SHrEmployee(models.Model):
             # Assign the full name to s_full_name
             rec.s_employee_id = employee_id
 
-    def create(self, vals):
-        role_profile = vals.get('s_role_profile')
-        if not role_profile:
-            raise ValidationError("The Role profile field is required.")
-        return super(SHrEmployee, self).create(vals)
+    @api.constrains('s_role_profile')
+    def _check_s_role_profile(self):
+        for record in self:
+            if not record.s_role_profile:
+                raise ValidationError("The Role profile field is required.")
 
     ### start Compensation and Benefits
 
@@ -276,8 +276,9 @@ class SHrEmployee(models.Model):
     def _check_s_personal_email(self):
         pattern = "[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]+"
         for record in self:
-            if not re.match(pattern, record.s_personal_email):
-                raise ValidationError("The email address is not valid")
+            if record.s_personal_email:
+                if not re.match(pattern, record.s_personal_email):
+                    raise ValidationError("The email address is not valid")
 
     @api.constrains('s_no_hours')
     def _check_s_no_hours(self):
@@ -289,8 +290,9 @@ class SHrEmployee(models.Model):
     def _check_s_corporate_email(self):
         pattern = "[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]+"
         for record in self:
-            if not re.match(pattern, record.s_corporate_email):
-                raise ValidationError("The email address is not valid")
+            if record.s_corporate_email:
+                if not re.match(pattern, record.s_corporate_email):
+                    raise ValidationError("The email address is not valid")
 
     @api.depends('birthday')
     def _compute_age(self):

@@ -12,7 +12,7 @@ class ChangePasswordUser(models.TransientModel):
                 raise ValidationError("Password must be numbers, letters, or other characters.")
             elif len(record.new_passwd) < 8:
                 raise ValidationError("Password must be more than 8 characters.")
-            elif record.new_passwd.islower() or record.new_passwd.isupper():
+            elif record.new_passwd.islower():
                 raise ValidationError("Password must include at least an upper-case character.")
 
     def change_password_button(self):

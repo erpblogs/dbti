@@ -138,7 +138,7 @@ class AuthSignupHome(Home):
             raise ValidationError("Password must be numbers, letters, or other characters.")
         if len(values.get('password')) < 8:
             raise ValidationError("Password must be more than 8 characters.")
-        if values.get('password').islower() or values.get('password').isupper():
+        if values.get('password').islower():
             raise ValidationError("Password must include at least an upper-case character.")
         supported_lang_codes = [code for code, _ in request.env['res.lang'].get_installed()]
         lang = request.context.get('lang', '')
