@@ -8,7 +8,7 @@ import re
 from odoo import tools, http, _
 from odoo.http import request
 
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.osv import expression
 from odoo.tools.misc import ustr
 
@@ -115,6 +115,23 @@ class AuthSignupHome(Home):
                 
         return response
     
+    def _prepare_signup_values(self, qcontext):
+        values = { key: qcontext.get(key) for key in ('login', 'name', 'password') }
+        if not values:
+            raise UserError(_("The form was not properly filled in."))
+        if values.get('password') != qcontext.get('confirm_password'):
+            raise UserError(_("Passwords do not match; please retype them."))
+        if values.get('password').isdigit() :
+            raise ValidationError("Password must be numbers, letters, or other characters.")
+        if len(values.get('password')) < 8:
+            raise ValidationError("Password must be more than 8 characters.")
+        if values.get('password').islower() or values.get('password').isupper():
+            raise ValidationError("Password must include at least an upper-case character.")
+        supported_lang_codes = [code for code, _ in request.env['res.lang'].get_installed()]
+        lang = request.context.get('lang', '')
+        if lang in supported_lang_codes:
+            values['lang'] = lang
+        return values
 
 class CustomAuthSignup(AuthSignupHome):
     

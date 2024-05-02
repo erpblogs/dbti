@@ -51,6 +51,9 @@
                     <field name="department_id" icon="fa-users" enable_counters="1"/>
                 </searchpanel>
                 <field name="name" filter_domain="[('name', 'ilike', self)]"/>
+                <filter name="message_needaction" string="Unread Messages" domain="[('message_needaction', '=', True)]" groups="mail.group_mail_notification_type_inbox"/>
+                <separator/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
                 <filter name="department" string="By Department" domain="[]" context="{'group_by':'department_id'}"/>
 				<separator/>
 				<filter name="company" string="By Company" domain="[]" context="{'group_by':'company_id'}"/>

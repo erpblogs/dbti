@@ -14,6 +14,6 @@
     'depends': [
         'base','mail',
     ],
-    'auto_install': True,
+    'auto_install': False,
     'license': '',
 }
