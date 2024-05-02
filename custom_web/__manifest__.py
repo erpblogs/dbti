@@ -13,7 +13,7 @@ Long description of module's purpose
 
     'category': 'web',
     'version': '0.1',
-    'depends': ['base', 'portal', 'auth_signup', 'custom_tools'],
+    'depends': ['base', 'web', 'portal', 'auth_signup', 'custom_tools'],
 
     # always loaded
     'data': [

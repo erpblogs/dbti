@@ -36,15 +36,42 @@ WRONG_EMAIL_FORMAT = _('Wrong email format. Please try again.')
 
 _logger = logging.getLogger(__name__)
 
+class CustomWebLogin(http.Controller):
+    @http.route('/login_policy', type='http', auth="user", website=True)
+    def web_login_policy(self, **kwargs):
+       
+        login_terms = request.env['ir.config_parameter'].sudo().get_param('login_terms')
+        # if not (use_invoice_terms and request.env.company.terms_type == 'html'):
+        #     return request.render('http_routing.http_error', {
+        #         'status_code': _('Oops'),
+        #         'status_message': _("""The requested page is invalid, or doesn't exist anymore.""")})
+        
+        
+        values = {
+            'login_terms': login_terms or '',
+            'company': request.env.company
+        }
+        return request.render("custom_web.login_term_policy", values)
+    
+    # @http.route('/terms', type='http', auth='public', website=True, sitemap=sitemap_terms)
+    # def terms_conditions(self, **kwargs):
+    #     use_invoice_terms = request.env['ir.config_parameter'].sudo().get_param('account.use_invoice_terms')
+    #     if not (use_invoice_terms and request.env.company.terms_type == 'html'):
+    #         return request.render('http_routing.http_error', {
+    #             'status_code': _('Oops'),
+    #             'status_message': _("""The requested page is invalid, or doesn't exist anymore.""")})
+    #     values = {
+    #         'use_invoice_terms': use_invoice_terms,
+    #         'company': request.env.company
+    #     }
+    #     return request.render("account.account_terms_conditions_page", values)
+    
+class CAuthSignupHome(Home):
 
-class AuthSignupHome(Home):
-
-    @http.route('/web/login', type='http', auth="none")
-    def web_login(self, redirect=None, **kw):
+    @http.route()
+    def web_login(self, *args, **kw):
         
-        
-        
-        response = super().web_login(redirect, **kw)
+        response = super().web_login(*args, **kw)
   
         
         not_admin = response.qcontext.get('login', '') != 'admin'

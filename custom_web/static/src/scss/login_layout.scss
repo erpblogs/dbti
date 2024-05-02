@@ -1,97 +1,98 @@
-.login-container {
-    // padding-top: 156px;
-    // padding-bottom: 156px;
-    // max-width: 440px;
+.oe_website_login_container {
+    .login-container {
+        max-width: 440px;
+        margin: 50px auto;
 
-    @media (max-width: 440px) {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .login-layout {
-        // padding: 40px;
-        // border: 1.4px solid;
-        // border-radius: 28px;
-        border-image-source: linear-gradient(163.16deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.0001) 40.57%, rgba(255, 255, 255, 0.0001) 57.44%, rgba(255, 255, 255, 0.1) 100%);
-
-
-        background: linear-gradient(138.02deg, #FFFFFF 1.18%, rgba(255, 255, 255, 0.860617) 99.97%);
-        background-blend-mode: luminosity;
-
-        .login-header {
-            .login-logo {
-                text-align: center;
-
-                img {
-                    width: 48px;
-                    height: 39px;
-
-                }
-            }
-
-            .login-title {
-                letter-spacing: 0em;
-                text-align: left;
-                color: #101828;
-
-
-            }
-
-            .login-sub-title {
-                letter-spacing: 0em;
-                text-align: center;
-                color: #475467;
-            }
+        @media (max-width: 440px) {
+            padding-left: 10px;
+            padding-right: 10px;
         }
 
-        .oe_login_form {
-            max-width: unset;
-            margin: unset;
+        .login-layout {
+            // padding: 40px;
+            // border: 1.4px solid;
+            // border-radius: 28px;
+            border-image-source: linear-gradient(163.16deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.0001) 40.57%, rgba(255, 255, 255, 0.0001) 57.44%, rgba(255, 255, 255, 0.1) 100%);
 
-            .field-login {}
 
-            .field-password {
+            background: linear-gradient(138.02deg, #FFFFFF 1.18%, rgba(255, 255, 255, 0.860617) 99.97%);
+            background-blend-mode: luminosity;
 
-                position: relative;
-
-                i {
-                    position: absolute;
-                    padding: 15px;
+            .login-header {
+                .login-logo {
                     text-align: center;
-                    font-size: initial;
-                    opacity: 0.5;
+
+                    img {
+                        width: 48px;
+                        height: 39px;
+
+                    }
                 }
 
-                i.fa-eye-slash {
-                    position: absolute;
-                    right: 0;
+                .login-title {
+                    letter-spacing: 0em;
+                    text-align: left;
+                    color: #101828;
+
+
+                }
+
+                .login-sub-title {
+                    letter-spacing: 0em;
+                    text-align: center;
+                    color: #475467;
                 }
             }
 
-            .field-remember {
-                .login-checkbox {
-                    input {
-                        width: 16px;
-                        gap: 0px;
-                        border-radius: 4px;
-                        border: 1px solid #D0D5DD;
-                        opacity: 0px;
-                        color: #FFFFFF;
+            .oe_login_form {
+                max-width: unset;
+                margin: unset;
+
+                .field-login {}
+
+                .field-password {
+
+                    position: relative;
+
+                    i {
+                        position: absolute;
+                        padding: 15px;
+                        text-align: center;
+                        font-size: initial;
+                        opacity: 0.5;
                     }
 
-                    label {
-                        //styleName: Text sm/Medium;
-                        font-weight: 400;
-                        text-align: left;
-                        color: #344054;
-                        margin-left: 8px;
+                    i.fa-eye-slash {
+                        position: absolute;
+                        right: 0;
                     }
                 }
 
-                .reset-password {
-                    // font-family: SF Pro;
-                    text-align: left;
-                    // color: #007AFF;
+                .field-remember {
+                    .login-checkbox {
+                        input {
+                            width: 16px;
+                            gap: 0px;
+                            border-radius: 4px;
+                            border: 1px solid #D0D5DD;
+                            opacity: 0px;
+                            color: #FFFFFF;
+                        }
+
+                        label {
+                            //styleName: Text sm/Medium;
+                            font-weight: 400;
+                            text-align: left;
+                            color: #344054;
+                            margin-left: 8px;
+                        }
+                    }
+
+                    .reset-password {
+                        // font-family: SF Pro;
+                        text-align: left;
+                        // color: #007AFF;
+                    }
                 }
             }
         }

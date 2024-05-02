@@ -1,41 +1,41 @@
-.oc_change_password_form {
+// .oc_change_password_form {
 
-    h3 {
-        //styleName: Header/H3;
-        // font-family: Pretendard;
-        text-align: left;
-        color: #272B31;
+//     h3 {
+//         //styleName: Header/H3;
+//         // font-family: Pretendard;
+//         text-align: left;
+//         color: #272B31;
 
-    }
+//     }
 
-    .o_form_label {
-        //styleName: Sub/subL;
-        // font-family: Pretendard;
-        text-align: left;
-        margin-bottom: 8px;
+//     .o_form_label {
+//         //styleName: Sub/subL;
+//         // font-family: Pretendard;
+//         text-align: left;
+//         margin-bottom: 8px;
 
-    }
+//     }
 
-    .o_input {
-        // width: Fill (656px)px;
-        // height: Fixed (60px)px;
-        gap: 0px;
-        border-radius: 8px;
-        border: 1px solid #B9B9C3;
-        justify: space-between;
+//     .o_input {
+//         // width: Fill (656px)px;
+//         // height: Fixed (60px)px;
+//         gap: 0px;
+//         border-radius: 8px;
+//         border: 1px solid #B9B9C3;
+//         justify: space-between;
 
-        &::placeholder,
-        &::-ms-input-placeholder,
-        &::-webkit-input-placeholder {
-            color: #0B0B0C;
-            //styleName: Sub/sub S;
-            text-align: left;
-        }
+//         &::placeholder,
+//         &::-ms-input-placeholder,
+//         &::-webkit-input-placeholder {
+//             color: #0B0B0C;
+//             //styleName: Sub/sub S;
+//             text-align: left;
+//         }
 
 
-    }
+//     }
 
-}
+// }
 
 .oc_change_password_footer {
     .btn-primary {
