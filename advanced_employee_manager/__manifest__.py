@@ -25,19 +25,4 @@
         'views/s_internal_work_history.xml',
         'views/s_training_development.xml',
     ],
-    'installable': True,
-    'auto_install': True,
-    'application': True,
-    'assets': {
-        'web.assets_backend': [
-            'advanced_employee_manager/static/src/fields/project_one2many/*',
-            'advanced_employee_manager/static/src/fields/compensationbenefit_one2many/*',
-            'advanced_employee_manager/static/src/fields/contactnumber_one2many/*',
-            'advanced_employee_manager/static/src/fields/valid_one2many/*',
-            'advanced_employee_manager/static/src/fields/family_one2many/*',
-            'advanced_employee_manager/static/src/fields/license_one2many/*',
-            'advanced_employee_manager/static/src/fields/education_one2many/*',
-            'advanced_employee_manager/static/fields/**/*',
-        ],
-    },
 }

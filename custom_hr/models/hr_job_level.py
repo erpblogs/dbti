@@ -7,7 +7,8 @@ class HrJobLevel(models.Model):
     _name = 'hr.job.level'
     _inherit = ['mail.thread']
     _description = 'Hr Level'
-    
+
+    active = fields.Boolean(default=True)
     name = fields.Char('Job level', required=True)
     description = fields.Char('Description')
     level_no = fields.Integer('Level No')
