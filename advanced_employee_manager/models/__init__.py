@@ -11,3 +11,4 @@ from . import s_external_work_history
 from . import s_internal_work_history
 from . import s_training_development
 from . import s_res_users
+from . import s_res_groups
