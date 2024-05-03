@@ -2,6 +2,7 @@ from odoo import models, fields, api
 import re
 from datetime import datetime
 from odoo.exceptions import ValidationError
+import math
 
 
 class SHrEmployee(models.Model):
@@ -26,7 +27,7 @@ class SHrEmployee(models.Model):
 
     s_employee_id = fields.Char(string='Employee ID', readonly=True)
     s_biometrics_id = fields.Char(string='Biometrics ID', size=10, unique=True)
-    s_role_profile = fields.One2many('res.users', 's_hr_res_user_id', string='Role profile', required=True)
+    s_role_profile = fields.One2many('res.groups', 's_hr_res_groups_id', string='Role profile', required=True)
     s_employee_status = fields.Selection(
         [('active', 'Active'), ('inactive', 'Inactive'), ('retire', 'Retire'), ('resign', 'Resign'),
          ('terminated', 'Terminated'), ('end_of_contract', 'End of contract'), ('on_hold', 'On hold')],
@@ -36,8 +37,8 @@ class SHrEmployee(models.Model):
     # s_date_hired = fields.Date(string='Date hired')
     s_date_of_separation = fields.Integer(string='Date of separation', readonly=True)
     s_date_of_regularization = fields.Integer(string='Date of regularization', readonly=True)
-    s_month_in_service = fields.Integer(string='Month in service', readonly=True)
-    s_years_in_service = fields.Integer(string='Years in service', readonly=True)
+    s_month_in_service = fields.Integer(string='Month in service', compute="_compute_month_in_service_and_years_in_service")
+    s_years_in_service = fields.Integer(string='Years in service', compute="_compute_month_in_service_and_years_in_service")
 
     s_position_title = fields.Many2one('hr.job', string='Position title', size=100)
     s_job_level = fields.Many2one('hr.job.level', string='Job level', size=100)
@@ -47,6 +48,18 @@ class SHrEmployee(models.Model):
     s_is_active = fields.Boolean(string='Is active')
     s_location = fields.Many2one('hr.work.location', string='Location')
     s_date_hired = fields.Datetime(string='Date hired', required=True)
+
+    @api.depends('s_date_hired')
+    def _compute_month_in_service_and_years_in_service(self):
+        for rec in self:
+            if rec.s_date_hired:
+                day_in_service = datetime.now().day - rec.s_date_hired.day
+                year_in_service = datetime.now().year - rec.s_date_hired.year
+                if day_in_service < 0:
+                    rec.s_month_in_service = (datetime.now().month - rec.s_date_hired.month - 1) + year_in_service*12
+                else:
+                    rec.s_month_in_service = (datetime.now().month - rec.s_date_hired.month) + year_in_service*12
+                rec.s_years_in_service = year_in_service
 
     @api.onchange('s_is_active')
     def _onchange_s_is_active(self):
@@ -139,8 +152,8 @@ class SHrEmployee(models.Model):
         [('hourly_rate', 'Hourly Rate'), ('daily_rate', 'Daily Rate'), ('monthly_rate', 'Monthly Rate')],
         string='Rate Type', required=True)
     s_monthly_rate = fields.Integer(string='Monthly Rate', size=12)
-    s_daily_rate = fields.Integer(string='Daily Rate', compute="_compute_daily_rate", store=True, readonly=True)
-    s_hourly_rate = fields.Integer(string='Hourly Rate', compute="_compute_hourly_rate", store=True, readonly=True)
+    s_daily_rate = fields.Float(string='Daily Rate', compute="_compute_daily_rate", store=True, readonly=True)
+    s_hourly_rate = fields.Float(string='Hourly Rate', compute="_compute_hourly_rate", store=True, readonly=True)
     s_payroll_schedule = fields.Selection(
         [('semi_monthly', 'Semi Monthly'), ('monthly', 'Monthly'), ('weekly', 'Weekly')],
         string='Payroll Schedule', required=True)
