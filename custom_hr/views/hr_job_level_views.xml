@@ -30,9 +30,9 @@
                     <group>
                         <!-- Add your fields here -->
                         <field name="name" />
-                        <field name="description" invisible="1"/>
-                        <field name="turn_around_time" invisible="1"/>
-                        <field name="level_no" invisible="1"/>
+                        <field name="description"/>
+                        <field name="turn_around_time"/>
+                        <field name="level_no"/>
                         <field name="company_id" groups="base.group_multi_company"/>
                     </group>
                 </sheet>
