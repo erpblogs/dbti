@@ -9,6 +9,10 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
 
+            <xpath expr="//field[@name='work_email']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
             <xpath expr="//page[@name='hr_settings']/group" position="before">
                 <group>
                     <group>
@@ -37,10 +41,10 @@
                         <field name="s_nick_name"/>
                         <field name="s_maiden_name"/>
                         <field name="s_personal_email"/>
-                        <field name="s_corporate_email"/>
+                        <field name="work_email" string="Corporate email"/>
                         <field name="company_id" string="Business name"/>
                         <field name="parent_id" string="Manager"/>
-<!--                        <field name="job_level_id"/>-->
+                        <!--                        <field name="job_level_id"/>-->
                     </group>
                 </group>
             </xpath>
@@ -297,9 +301,6 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
 
-            <xpath expr="//field[@name='work_email']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
 
             <xpath expr="//field[@name='department_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
