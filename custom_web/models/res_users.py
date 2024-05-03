@@ -20,18 +20,18 @@ _logger = logging.getLogger(__name__)
 
 INACTIVE_EMAIL_WARNING = _('This email address is no longer active. Please use a different account to log in.')
 
+
 class ResUsers(models.Model):
     _inherit = 'res.users'
 
     state = fields.Selection(selection_add=[('inactive', 'Inactive')])
     user_type = fields.Char(compute='_get_user_type', string="User Type")
-    login = fields.Char(required=True, help="Used to log into the system", compute="_compute_login_email", store=True)
 
-    @api.depends('login')
-    def _compute_login_email(self):
-        for user in self:
-            if user.login:
-                user.email = user.login
+    # @api.depends('login')
+    # def _compute_login_email(self):
+    #     for user in self:
+    #         if user.login:
+    #             user.email = user.login
 
     def _get_user_type(self):
         for r in self:
@@ -41,10 +41,10 @@ class ResUsers(models.Model):
     def _compute_state(self):
         for user in self:
             if not user.active:
-                user.state = 'inactive' 
+                user.state = 'inactive'
             elif user.login_date:
-                user.state = 'active' 
-            else: 
+                user.state = 'active'
+            else:
                 user.state = 'new'
 
     def reset_password(self, login):

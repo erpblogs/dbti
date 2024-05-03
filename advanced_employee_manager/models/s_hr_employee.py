@@ -56,10 +56,13 @@ class SHrEmployee(models.Model):
                 day_in_service = datetime.now().day - rec.s_date_hired.day
                 year_in_service = datetime.now().year - rec.s_date_hired.year
                 if day_in_service < 0:
-                    rec.s_month_in_service = (datetime.now().month - rec.s_date_hired.month - 1) + year_in_service*12
+                    rec.s_month_in_service = (datetime.now().month - rec.s_date_hired.month - 1) + year_in_service*12 if (datetime.now().month - rec.s_date_hired.month - 1) > 0 else 0
                 else:
                     rec.s_month_in_service = (datetime.now().month - rec.s_date_hired.month) + year_in_service*12
                 rec.s_years_in_service = year_in_service
+            else:
+                rec.s_month_in_service = 0
+                rec.s_years_in_service = 0
 
     @api.onchange('s_is_active')
     def _onchange_s_is_active(self):
