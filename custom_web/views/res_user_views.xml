@@ -40,6 +40,7 @@
             			<field name="name" placeholder="User Name" required="1" class="o_user_style"/>
             			<label for="login" string="Email"/>
             			<field name="login" placeholder="Email" class="o_user_style"/>
+            			<field name="email" invisible="1"/>
             		</div>
             	</xpath>
                 <xpath expr="//page[@name='access_rights']" position="attributes" >
