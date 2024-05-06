@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-    	<!-- inherit res user view form -->
-    	<record id="view_groups_form_inherit" model="ir.ui.view">
-    		<field name="name">res.groups.form.inherit</field>
+        <!-- inherit res user view form -->
+        <record id="view_groups_form_inherit" model="ir.ui.view">
+            <field name="name">res.groups.form.inherit</field>
             <field name="model">res.groups</field>
             <field name="inherit_id" ref="base.view_groups_form"/>
             <field name="arch" type="xml">
-            	<xpath expr="//field[@name='name']" position="attributes">
-            		<attribute name="string">Group Name</attribute>
-            	</xpath>
-            	<xpath expr="//field[@name='share']" position="after">
-            		<field name="group_code"/>
-            	</xpath>
-            	<xpath expr="//page[@name='menus']" position="attributes">
-            		<attribute name="invisible">1</attribute>
-            	</xpath>
-            	<xpath expr="//page[@name='views']" position="attributes">
-            		<attribute name="invisible">1</attribute>
-            	</xpath>
-            	<xpath expr="//page[@name='record_rules']" position="attributes">
-            		<attribute name="invisible">1</attribute>
-            	</xpath>
-            	<xpath expr="//page[@name='notes']" position="attributes">
-            		<attribute name="invisible">1</attribute>
-            	</xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="string">Group Name</attribute>
+                </xpath>
+                <xpath expr="//field[@name='share']" position="after">
+                    <field name="group_code"/>
+                </xpath>
+                <xpath expr="//page[@name='menus']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='views']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='record_rules']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='notes']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!--				start ẩn field name trong access right task FC_DIT_001-366-->
+                <xpath expr="//page[@name='access_rights']/field[@name='model_access']/tree/field[@name='name']"
+                       position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+                <!--				end ẩn field name trong access right task FC_DIT_001-366-->
             </field>
-    	</record>
+        </record>
     </data>
 </odoo>
