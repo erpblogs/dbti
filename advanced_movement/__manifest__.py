@@ -11,7 +11,7 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        # 'views/s_hr_employee_views.xml',
+        'views/s_survey_survey_views.xml',
         # 'views/s_res_config_settings.xml',
         # 'views/s_compensation_benefit.xml',
         # 'views/s_contact_number.xml',

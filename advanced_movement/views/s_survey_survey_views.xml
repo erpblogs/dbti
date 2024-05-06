@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="s_survey_survey_form_inherit" model="ir.ui.view">
+        <field name="name">survey.survey.form.inherit</field>
+        <field name="model">survey.survey</field>
+        <field name="inherit_id" ref="survey.survey_survey_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_start_session']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//notebook" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+             <xpath expr="//field[@name='survey_type']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+             <xpath expr="//field[@name='background_image']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+             <xpath expr="//field[@name='title']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='survey_type']" position="after">
+                <group class="Exit_Interview">
+                    <group>
+                        <field name="create_uid"/>
+                        <field name="s_employee_id"/>
+                        <field name="s_employee_name"/>
+                        <field name="s_company"/>
+                        <field name="s_exit_type"/>
+                        <field name="s_amended_from"/>
+                    </group>
+                    <group>
+                        <field name="survey_type"/>
+                        <field name="s_start_date_in_the_organization"/>
+                        <field name="s_start_date_in_the_position"/>
+                        <field name="s_total_length_of_service"/>
+                        <field name="s_other_positions_held"/>
+                        <field name="s_primary_reason_in_leaving_the_organization"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="s_survey_survey_tree_inherit" model="ir.ui.view">
+        <field name="name">survey.survey.tree.inherit</field>
+        <field name="model">survey.survey</field>
+        <field name="inherit_id" ref="survey.survey_survey_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='title']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='answer_duration_avg']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='answer_count']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='success_ratio']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='answer_score_avg']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='certification']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+<!--            <xpath expr="//field[@name='parent_id']" position="attributes">-->
+<!--                <attribute name="column_invisible">1</attribute>-->
+<!--            </xpath>-->
+
+            <xpath expr="//field[@name='title']" position="before">
+                <field name="survey_type" string="Movement Type"/>
+                <field name="create_uid"/>
+                <field name="s_employee_id"/>
+                <field name="s_employee_name"/>
+                <field name="create_date" string="Posting Date"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
