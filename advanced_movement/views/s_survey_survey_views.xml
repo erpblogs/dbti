@@ -32,8 +32,8 @@
                 <group class="Exit_Interview">
                     <group>
                         <field name="create_uid"/>
-                        <field name="s_employee_id"/>
                         <field name="s_employee_name"/>
+                        <field name="s_employee_id"/>
                         <field name="s_company"/>
                         <field name="s_exit_type"/>
                         <field name="s_amended_from"/>
@@ -91,8 +91,8 @@
             <xpath expr="//field[@name='title']" position="before">
                 <field name="survey_type" string="Movement Type"/>
                 <field name="create_uid"/>
-                <field name="s_employee_id"/>
                 <field name="s_employee_name"/>
+                <field name="s_employee_id"/>
                 <field name="create_date" string="Posting Date"/>
             </xpath>
         </field>

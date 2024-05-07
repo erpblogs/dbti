@@ -7,9 +7,9 @@ from odoo.exceptions import ValidationError
 class SSurveySurvey(models.Model):
     _inherit = 'survey.survey'
 
-    s_employee_id = fields.Many2one('hr.employee', string='Employee Id', required=True)
-    s_employee_name = fields.Char(string='Employee Name', related='s_employee_id.name', store=True)
-    s_company = fields.Char(string='Company', related='s_employee_id.company_id.name', store=True)
+    s_employee_name = fields.Many2one('hr.employee', string='Employee Name', required=True)
+    s_employee_id = fields.Integer(string='Employee Id', related='s_employee_name.id', store=True)
+    s_company = fields.Char(string='Company', related='s_employee_name.company_id.name', store=True)
     s_exit_type = fields.Selection(
         [('retirement', 'Retirement'), ('resignation', 'Resignation'), ('termination', 'Termination'),
          ('end_of_contract', 'End of Contract')], string='Exit Type')
