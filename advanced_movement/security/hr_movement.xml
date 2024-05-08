@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="module_category_movement" model="ir.module.category">
+			<field name="name">Movement</field>
+			<field name="sequence">1</field>
+		</record>
+
+		<!-- <record id="group_user" model="res.groups">
+			<field name="name">User</field>
+			<field name="category_id" ref="module_category_movement" />
+			<field name="implied_ids" eval="[(4,ref('base.group_user'))]" />
+		</record> -->
+
+		<record id="group_manager" model="res.groups">
+			<field name="name">Manager</field>
+			<field name="category_id" ref="module_category_movement" />
+			<!-- <field name="implied_ids" eval="[(4,ref('group_user'))]" /> -->
+		</record> 
+	</data>
+</odoo>
