@@ -1,0 +1,15 @@
+.my_one2many_field_class {
+    max-height: 200px; /* Đặt chiều cao tối đa của trường One2many */
+    overflow-y: auto; /* Kích hoạt tính năng cuộn dọc */
+    display: block;
+    max-width: 80%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    color: #3584e4;
+    background-color: #FFFFFF;
+    border: 1px solid;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.8rem;
+}
