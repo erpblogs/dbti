@@ -20,6 +20,11 @@
         'views/approval_role_views.xml',
         'views/movement_menu_viewx.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'advanced_movement/static/src/css/my_one2many_field_class.css',
+        ]
+    },
     'installed': True,
     'auto_install': False,
 }

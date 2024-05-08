@@ -9,7 +9,7 @@
 					<group>
 						<group>
 							<field name="position_role"/>
-							<field name="user_ids" widget="many2many_tags" />
+							<field name="user_ids" widget="many2many_tags" options="{'no_create': True, 'color_field': 'color'}"/>
 							<field name="company_id"/>
 						</group>
 					</group>
@@ -28,7 +28,7 @@
 		<field name="arch" type="xml">
 			<tree string="Approval role Tree">
 				<field name="position_role"/>
-				<field name="user_ids" widget="many2many_tags"/>
+				<field name="user_ids" widget="many2many_tags" options="{'no_create': True, 'color_field': 'color'}"/>
 				<field name="company_id"/>
 			</tree>
 		</field>

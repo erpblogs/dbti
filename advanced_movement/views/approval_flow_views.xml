@@ -14,7 +14,7 @@
 							<field name="parallel"/>
 						</group>
 					</group>
-					<field name="stage_id" class="o_user_style_group"/>
+					<field name="stage_id" class="my_one2many_field_class"/>
 				</sheet>
 				<div class="oe_chatter">
                     <field name="message_follower_ids"  widget="mail_followers"/>
