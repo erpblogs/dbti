@@ -1,0 +1,4 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access.approval.flow.manager","approval.flow.manager","model_approval_flow","group_manager",1,1,0,0
+"access.approval.role.manager","approval.role.manager","model_approval_role","group_manager",1,1,1,1
+"access.movement.stage.manager","movement.stage.manager","model_movement_stage","group_manager",1,1,1,1
