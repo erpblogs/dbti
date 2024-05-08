@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+	<record id="regional_manager" model="approval.role">
+		<field name="position_role">Regional Manager</field>
+	</record>
+	<record id="marketing_department_manager" model="approval.role">
+		<field name="position_role">Marketing Department Manager</field>
+	</record>
+	<record id="it_department_manager" model="approval.role">
+		<field name="position_role">It Department Manager</field>
+	</record>
+	<record id="hr_department_manager" model="approval.role">
+		<field name="position_role">HR Department Manager</field>
+	</record>
+	<record id="rd_department_manager" model="approval.role">
+		<field name="position_role">R&amp;D Department Manager</field>
+	</record>
+	<record id="financial_analyst" model="approval.role">
+		<field name="position_role">Financial Analyst</field>
+	</record>
+	<record id="sales_director" model="approval.role">
+		<field name="position_role">Sales Director</field>
+	</record>
+	<record id="accountant" model="approval.role">
+		<field name="position_role">Accountant</field>
+	</record>
+</odoo>
