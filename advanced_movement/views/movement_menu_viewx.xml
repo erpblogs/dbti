@@ -9,18 +9,22 @@
 				  sequence="10"/>
 				<menuitem id="employee_movement"
 						  name="Employee Movement"
-						  parent="movement_manager"/>
+						  parent="movement_manager"
+						  action="advanced_movement.action_hr_movement"/>
 				<menuitem id="organization_movement"
 						  name="Organization Movement"
-						  parent="movement_manager"/>
+						  parent="movement_manager"
+						  action="advanced_movement.action_hr_movement"/>
 				<menuitem id="exit_interview_managerment"
 				  		  name="Exit Interview Managerment"
-				  		  parent="movement_manager"/>
+				  		  parent="movement_manager"
+				  		  action="advanced_movement.action_hr_movement"/>
 			<menuitem id="movement_configuration"
 				  name="Configuration"
 				  parent="movement_root"
-				  groups="advanced_movement.group_manager"
+				  
 				  sequence="20"/>
+				<!--   groups="advanced_movement.group_manager" -->
 				<menuitem id="approval_flow"
 						  name="Approval Flow"
 						  parent="movement_configuration"

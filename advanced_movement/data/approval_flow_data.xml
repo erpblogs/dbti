@@ -24,4 +24,10 @@
 	<record id="end_of_contract" model="approval.flow">
 		<field name="movement_type">End of Contract</field>
 	</record>
+	<record id="rehire" model="approval.flow">
+		<field name="movement_type">Rehire</field>
+	</record>
+	<record id="extension_of_service" model="approval.flow">
+		<field name="movement_type">Extension of Service</field>
+	</record>
 </odoo>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="hr_movement_tree_views" model="ir.ui.view">
+		<field name="name">hr.movement.tree.views</field>
+		<field name="model">hr.movement</field>
+		<field name="arch" type='xml'>
+			<tree string="Hr Movement Tree" > 
+				<field name="movement_type_id"/>
+				<field name="used_id"/>
+				<field name="employee_id"/>
+				<field name="employee_name"/>
+				<field name="posting_date"/>
+				<field name="effective_date" widget="calendar"/>
+				<field name="remark"/>
+				<field name="status" widget="badge"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="hr_movement_form_views" model="ir.ui.view">
+		<field name="name">hr.movement.form.views</field>
+		<field name="model">hr.movement</field>
+		<field name="arch" type='xml'>
+			<form string="Hr Movement Form">
+				<header>
+	                <button string="Submit" name="action_to_submit_movement" type="object" class="oe_highlight" invisible="id == False or status != 'draft'"/>
+	                <button string="To Approve" name="action_to_approve_movement" type="object" class="oe_highlight" invisible="status != 'to_submit'"/>
+	                <button string="Approved" name="action_approved_movement" type="object"  class="oe_highlight" invisible="status != 'to_approve'"/>
+	                <button string="Refuse" name="action_refused_movement" type="object"/> <!-- invisible="status not in ('draft', 'to_submit', 'to_approve')" -->
+	                <button string="Mark as Draft" name="action_draft_movement" type="object" />  <!-- invisible="status not in ['draft', 'refuse']" -->
+	                <field name="status" widget="statusbar" statusbar_visible="to_approve,refused,approved" />
+            	</header>
+				<sheet>
+					<div class="oe_title">
+						<group>
+							<group>
+								<field name="used_id"/>
+								<field name="employee_id"/>
+								<field name="employee_name"/>
+								<field name="company_id"/>
+								<field name="remark"/>
+							</group>
+							<group>
+								<field name="movement_type_id"/>
+								<field name="posting_date"/>
+								<field name="effective_date" widget="calendar"/>
+								<field name="retirement_type" invisible="movement_type_id != 5"/>
+								<field name="current_employee_status" invisible="movement_type_id != 5"/>
+								<field name="is_processed"/>
+							</group>
+						</group>
+					</div>
+				</sheet>
+				<div class="oe_chatter">
+					<field name="message_follower_ids" />
+					<field name="message_ids" />
+				</div>
+			</form>
+		</field>
+	</record>
+	
+	<record id="hr_movement_filter_views" model="ir.ui.view">
+		<field name="name">hr.movement.filter.views</field>
+		<field name="model">hr.movement</field>
+		<field name="arch" type="xml">
+			<search string="HR Movement search">
+				<field name="movement_type_id"/>
+				<field name="used_id"/>
+				<field name="employee_id"/>
+				<field name="employee_name"/>
+				<field name="posting_date"/>
+				<field name="effective_date"/>
+				<field name="remark"/>
+				<field name="status"/>
+				<searchpanel>
+                    <field name="status" icon="fa-building" enable_counters="1"/>
+                    <field name="department_id" icon="fa-users" enable_counters="1"/>
+                </searchpanel>
+                <filter name="message_needaction" string="Unread Messages" domain="[('message_needaction', '=', True)]" groups="mail.group_mail_notification_type_inbox"/>
+                <separator/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+                <filter name="department" string="By Department" domain="[]" context="{'group_by':'department_id'}"/>
+				<separator/>
+				<filter name="status" string="By Status" domain="[]" context="{'group_by':'status'}"/>
+				<separator/>
+			</search>
+		</field>
+	</record>
+	
+	<record id="action_hr_movement" model="ir.actions.act_window">
+		<field name="name">Employee Movement</field>
+		<field name="res_model">hr.movement</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+</odoo>
