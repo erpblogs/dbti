@@ -1,6 +1,6 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-from datetime import timedelta
+
 
 class HrMovement(models.Model):
     _name = "hr.movement"
@@ -13,10 +13,12 @@ class HrMovement(models.Model):
     name = fields.Char(compute="_compute_name")
     movement_type_id = fields.Many2one("approval.flow", string="Movement Type", required=True)
     used_id = fields.Many2one("res.users", string="Create By", default=lambda self: self.env.user, readonly=True)
-    employee_id = fields.Many2one("hr.employee", string="Employee ID", required=True)
+    employee_id = fields.Many2one("hr.employee", string="Employee", required=True)
+    employeeid = fields.Char(string="Employee ID", compute="_compute_employee_id", store=True)
     employee_name = fields.Char(string="Employee Name", related="employee_id.name", store=True, depends=['employee_id'])
-    posting_date = fields.Datetime(string="Posting Date", default=fields.Datetime.today())
-    effective_date = fields.Datetime(string="Effective On", required=True, default=lambda self: (fields.Datetime.today() + timedelta(days=1)))
+    posting_date = fields.Datetime(string="Posting Date", default=fields.Datetime.now)
+    effective_date = fields.Datetime(string="Effective On", required=True, default=fields.Datetime.now)
+    approved_date = fields.Datetime(string='Approved Date', compute="_compute_approved_date", store=True)
     remark = fields.Char(string="Remark", size=100, required=True)
     status = fields.Selection([
         ('draft','Draft'),
@@ -26,7 +28,7 @@ class HrMovement(models.Model):
         ('approved','Approved')
         ], string="Status", default="draft", required=True, tracking=True
     )
-    company_id = fields.Many2one("res.company", string="Company", compute="_compute_company_id", store=True)
+    company_id = fields.Many2one("res.company", string="Company", compute="_compute_employee_id", store=True)
     type = fields.Selection([
         ('other','Other'),
         ('upgrade','Upgrade')
@@ -37,17 +39,36 @@ class HrMovement(models.Model):
     retirement_type = fields.Selection([
         ('temporary','Temporary'),
         ('lateral','Lateral')
-        ], string="Retirement Type", required=True, tracking=True
+        ], string="Retirement Type", tracking=True, default="temporary", required=True
     )
-    termination_due_to = fields.Char(string="Termination Due To")
-    end_of_contract_due_to = fields.Char(string="End of Contract Due To")
-    
+    termination_due_to = fields.Selection([
+        ('just_cause','Just cause'),
+        ('authorized_cause','Authorized cause'),
+        ('work_abandoment','Work Abandonment')
+        ], string="Termination Due To", default="just_cause", required=True
+    )
+    end_of_contract_due_to = fields.Selection([
+        ('end_of_probation','End of Probation'),
+        ('end_of_contract','End of Contract')
+        ], string="End of Contract Due To", default="end_of_probation", required=True
+    )
+
     current_company = fields.Char(string="Current Company")
     current_department = fields.Char(string="Current Department") 
     current_job_grade = fields.Char(string="Current Job Grade")
     current_location = fields.Char(string="Current Location")
     current_position_title = fields.Char(string="Current Position Title")
-    current_employee_status = fields.Selection(string="Current Employee Status", related="employee_id.s_employee_status", store=True, depends=["employee_id"])
+    current_employee_status = fields.Selection([
+        ('active', 'Active'),
+        ('inactive', 'Inactive'),
+        ('retire', 'Retire'),
+        ('resign', 'Resign'),
+        ('terminated', 'Terminated'),
+        ('end_of_contract', 'End of contract'),
+        ('on_hold', 'On hold')
+        ], string='Current Employee Status', compute='_compute_employee_status', store=True
+    )
+   
     current_position = fields.Char(string="Current Position")
     current_job_level = fields.Char(string="Current Job Level")
     current_rate = fields.Integer(string="Current Rate")
@@ -73,9 +94,9 @@ class HrMovement(models.Model):
         ('hourly_rate','Hourly Rate'),
         ('daily_rate','Daily Rate'),
         ('monthly_rate','Monthly Rate')
-        ], string="New Rate Type", tracking=True, required=True
+        ], string="New Rate Type", tracking=True, required=True, default="hourly_rate"
     )
-    new_rate = fields.Integer(string="New Rate", required=True)
+    new_rate = fields.Integer(string="New Rate")
     new_minimum_take_home = fields.Float(string="New Minimum Take Home")
     new_cost_center = fields.Integer(string="New Cost Center")
     new_total_year_days = fields.Float(string="New Total Year Days")
@@ -113,13 +134,12 @@ class HrMovement(models.Model):
             r.name = str(r.used_id.name) + ' on ' + str(r.movement_type_id.movement_type)
             
     @api.depends('employee_id')
-    def _compute_company_id(self):
+    def _compute_employee_id(self):
         for r in self:
             if r.employee_id:
                 r.company_id = r.employee_id.company_id
-                
-    
-    
+                r.employeeid = r.employee_id.id
+
     def action_to_submit_movement(self):
         for r in self:
             if r.status != 'draft':
@@ -134,12 +154,33 @@ class HrMovement(models.Model):
         self.write({'status': 'to_approve'})
         return True
 
+    
     def action_approved_movement(self):
         for r in self:
             if r.status != 'to_approve':
                 raise UserError(_("You can not set approved while its status is not Approve."))
         self.write({'status': 'approved'})
-        return True
+    
+    @api.depends('status')
+    def _compute_approved_date(self):
+        approved_date = fields.Datetime.now()
+        for r in self:
+            if r.status == "approved":
+                r.approved_date = approved_date
+
+    @api.depends('status','employee_id')
+    def _compute_employee_status(self):
+        current_emp_status = self.employee_id.s_employee_status
+        for r in self:
+            if r.status != "approved":
+                r.employee_id.write({'s_employee_status': 'retire'})
+                r.current_employee_status = r.employee_id.s_employee_status
+            else:
+                if  r.approved_date < r.effective_date:
+                    r.current_employee_status = r.employee_id.s_employee_status
+                else:
+                    r.employee_id.write({'s_employee_status': 'active'})
+                    r.current_employee_status = r.employee_id.s_employee_status
 
     def action_draft_movement(self):
         for r in self:

@@ -7,12 +7,12 @@
 			<tree string="Hr Movement Tree" > 
 				<field name="movement_type_id"/>
 				<field name="used_id"/>
-				<field name="employee_id"/>
+				<field name="employeeid"/>
 				<field name="employee_name"/>
 				<field name="posting_date"/>
-				<field name="effective_date" widget="calendar"/>
+				<field name="effective_date"/>
 				<field name="remark"/>
-				<field name="status" widget="badge"/>
+				<field name="status" widget="badge" decoration-info="status == 'to_submit'" decoration-warning="status == 'to_approve'" decoration-success="status == 'approved'"/>
 			</tree>
 		</field>
 	</record>
@@ -26,8 +26,8 @@
 	                <button string="Submit" name="action_to_submit_movement" type="object" class="oe_highlight" invisible="id == False or status != 'draft'"/>
 	                <button string="To Approve" name="action_to_approve_movement" type="object" class="oe_highlight" invisible="status != 'to_submit'"/>
 	                <button string="Approved" name="action_approved_movement" type="object"  class="oe_highlight" invisible="status != 'to_approve'"/>
-	                <button string="Refuse" name="action_refused_movement" type="object"/> <!-- invisible="status not in ('draft', 'to_submit', 'to_approve')" -->
-	                <button string="Mark as Draft" name="action_draft_movement" type="object" />  <!-- invisible="status not in ['draft', 'refuse']" -->
+	                <button string="Refuse" name="action_refused_movement" type="object" invisible="status not in ('approved', 'to_submit', 'to_approve')"/>
+	                <button string="Mark as Draft" name="action_draft_movement" type="object"/>
 	                <field name="status" widget="statusbar" statusbar_visible="to_approve,refused,approved" />
             	</header>
 				<sheet>
@@ -35,18 +35,23 @@
 						<group>
 							<group>
 								<field name="used_id"/>
-								<field name="employee_id"/>
+								<field name="employee_id" context="{'default_employee_id': employee_id.id}" invisible="employee_id != False"/>
+								<field name="employeeid"/>
 								<field name="employee_name"/>
 								<field name="company_id"/>
-								<field name="remark"/>
+								<field name="posting_date"/>
 							</group>
 							<group>
 								<field name="movement_type_id"/>
-								<field name="posting_date"/>
-								<field name="effective_date" widget="calendar"/>
-								<field name="retirement_type" invisible="movement_type_id != 5"/>
-								<field name="current_employee_status" invisible="movement_type_id != 5"/>
+								<field name="effective_date"/>
+								<field name="retirement_type" invisible="movement_type_id != 5 "/>
+								<field name="termination_due_to" invisible="movement_type_id != 7 "/>
+								<field name="end_of_contract_due_to" invisible="movement_type_id != 8 "/>
+								<field name="current_employee_status" invisible="movement_type_id not in (5, 6, 7, 8)"/>
 								<field name="is_processed"/>
+							</group>
+							<group>
+								<field name="remark"/>
 							</group>
 						</group>
 					</div>
@@ -66,7 +71,7 @@
 			<search string="HR Movement search">
 				<field name="movement_type_id"/>
 				<field name="used_id"/>
-				<field name="employee_id"/>
+				<field name="employeeid"/>
 				<field name="employee_name"/>
 				<field name="posting_date"/>
 				<field name="effective_date"/>

@@ -22,9 +22,8 @@
 			<menuitem id="movement_configuration"
 				  name="Configuration"
 				  parent="movement_root"
-				  
+				  groups="advanced_movement.group_manager"
 				  sequence="20"/>
-				<!--   groups="advanced_movement.group_manager" -->
 				<menuitem id="approval_flow"
 						  name="Approval Flow"
 						  parent="movement_configuration"
