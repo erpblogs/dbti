@@ -3,6 +3,7 @@
 	<data>
 		<menuitem id="movement_root"
 				  name="Movement"/>
+
 			<menuitem id="movement_manager"
 				  name="Movement Manager"
 				  parent="movement_root"
@@ -18,7 +19,7 @@
 				<menuitem id="exit_interview_managerment"
 				  		  name="Exit Interview Managerment"
 				  		  parent="movement_manager"
-				  		  action="advanced_movement.action_hr_movement"/>
+				  		  action="advanced_movement.s_exit_interview_record_action"/>
 			<menuitem id="movement_configuration"
 				  name="Configuration"
 				  parent="movement_root"

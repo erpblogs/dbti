@@ -3,3 +3,6 @@
 "access.approval.role.manager","approval.role.manager","model_approval_role","group_manager",1,1,1,1
 "access.movement.stage.manager","movement.stage.manager","model_movement_stage","group_manager",1,1,1,1
 "access.hr.movement.manager","hr.movement.manager","model_hr_movement","group_manager",1,1,1,1
+access_s_exit_interview_record,access_s_exit_interview_record,model_s_exit_interview_record,,1,1,1,1
+access_s_job_rotation_request,access_s_job_rotation_request,model_s_job_rotation_request,,1,1,1,1
+access_s_hr_movement_user,access_s_hr_movement_user,model_hr_movement_user,,1,1,1,1

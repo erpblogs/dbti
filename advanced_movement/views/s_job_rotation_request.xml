@@ -1,0 +1,78 @@
+<odoo>
+    <data>
+        <record id="s_job_rotation_request_view_form" model="ir.ui.view">
+            <field name="name">s_job_rotation_request_view_form</field>
+            <field name="model">s.job.rotation.request</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="create_uid"/>
+                                <field name="s_employee_name"/>
+                                <field name="s_employee_id"/>
+                                <field name="s_company"/>
+                            </group>
+                            <group>
+                                <field name="survey_type"/>
+                                <!--                                <field name="department_id"/>-->
+                                <field name="s_effective_on"/>
+                                <field name="s_type"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="s_remark"/>
+                        </group>
+                        <group>
+
+                            <group>
+                                <field name="s_current_position"/>
+                                <field name="s_current_job_level"/>
+                                <field name="s_current_rate_type"/>
+                                <field name="s_current_rate"/>
+                                <field name="s_current_minimum_take_home"/>
+                                <field name="s_current_cost_center"/>
+                                <field name="s_current_total_year_days"/>
+                                <field name="s_current_no_hours"/>
+                                <field name="s_current_payroll_schedule"/>
+                            </group>
+                            <group>
+                                <field name="s_new_rate_type"/>
+                                <field name="s_new_rate"/>
+                                <field name="s_new_minimum_take_home"/>
+                                <field name="s_new_cost_center"/>
+                                <field name="s_new_total_year_days"/>
+                                <field name="s_is_other_total_year_days" invisile="1"/>
+                                <field name="s_other_total_year_days" invisile="not s_is_other_total_year_days"/>
+                                <field name="s_new_no_hours"/>
+                                <field name="s_new_payroll_schedule"/>
+                                <field name="s_is_processed"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="s_job_rotation_request_view_tree" model="ir.ui.view">
+            <field name="name">s_job_rotation_request_view_tree</field>
+            <field name="model">s.job.rotation.request</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="survey_type" string="Movement Type"/>
+                    <field name="create_uid"/>
+                    <field name="s_employee_id"/>
+                    <field name="s_employee_name"/>
+                    <field name="create_date" string="Posting Date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="s_job_rotation_request_action" model="ir.actions.act_window">
+            <field name="name">Job Rotation Request</field>
+            <field name="res_model">s.job.rotation.request</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>
