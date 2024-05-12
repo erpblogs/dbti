@@ -9,6 +9,8 @@ class SHrEmployee(models.Model):
     _inherit = 'hr.employee'
 
     s_last_name = fields.Char(string='Last name', size=100, required=True)
+    name = fields.Char(string="First name", related='resource_id.name', store=True, readonly=False, tracking=True)
+    birthday = fields.Date('Birthdate', groups="hr.group_hr_user", tracking=True)
     # s_first_name = fields.Char(string='First name', size=100, required=True)
     s_middle_name = fields.Char(string='Middle name', size=100)
     s_full_name = fields.Char(string='Full name', compute='_compute_full_name')
@@ -26,19 +28,21 @@ class SHrEmployee(models.Model):
     s_corporate_email = fields.Char(string='Corporate email', size=100, unique=True)
 
     s_employee_id = fields.Char(string='Employee ID', readonly=True)
-    s_biometrics_id = fields.Char(string='Biometrics ID', size=10, unique=True)
+    s_biometrics_id = fields.Char(string='Biometrics ID', size=10)
     s_role_profile = fields.One2many('res.groups', 's_hr_res_groups_id', string='Role profile', required=True)
     s_employee_status = fields.Selection(
         [('active', 'Active'), ('inactive', 'Inactive'), ('retire', 'Retire'), ('resign', 'Resign'),
          ('terminated', 'Terminated'), ('end_of_contract', 'End of contract'), ('on_hold', 'On hold')],
-        string='Employee status', default='active', readonly=True)
+        string='Employment Status', default='active', readonly=True)
     s_resigned_date = fields.Date(string='Resigned date', readonly=True)
     s_department = fields.Many2one('hr.department', string='Department')
     # s_date_hired = fields.Date(string='Date hired')
     s_date_of_separation = fields.Integer(string='Date of separation', readonly=True)
     s_date_of_regularization = fields.Integer(string='Date of regularization', readonly=True)
-    s_month_in_service = fields.Integer(string='Month in service', compute="_compute_month_in_service_and_years_in_service")
-    s_years_in_service = fields.Integer(string='Years in service', compute="_compute_month_in_service_and_years_in_service")
+    s_month_in_service = fields.Integer(string='Month in service',
+                                        compute="_compute_month_in_service_and_years_in_service")
+    s_years_in_service = fields.Integer(string='Years in service',
+                                        compute="_compute_month_in_service_and_years_in_service")
 
     s_position_title = fields.Many2one('hr.job', string='Position title', size=100)
     s_job_level = fields.Many2one('hr.job.level', string='Job level', size=100)
@@ -47,7 +51,22 @@ class SHrEmployee(models.Model):
     s_project_project_ids = fields.One2many('project.project', 's_hr_employee_id', string='Project')
     s_is_active = fields.Boolean(string='Is active')
     s_location = fields.Many2one('hr.work.location', string='Location')
-    s_date_hired = fields.Datetime(string='Date hired', required=True)
+    s_date_hired = fields.Date(string='Date hired', required=True)
+
+    @api.constrains('s_biometrics_id')
+    def _check_s_biometrics_id_unique(self):
+        for record in self:
+            if record.s_biometrics_id:
+                count = self.search_count([('s_biometrics_id', '=', record.s_biometrics_id)])
+                if count > 1:
+                    raise ValidationError("The Biometrics ID must be unique.")
+
+    def fields_get(self, allfields=None, attributes=None):
+        res = super(SHrEmployee, self).fields_get(allfields, attributes)
+        gender_options = [('male', 'Male'), ('female', 'Female')]  # Giả sử bạn muốn loại bỏ lựa chọn khác
+        if 'gender' in res:
+            res['gender']['selection'] = gender_options
+        return res
 
     @api.depends('s_date_hired')
     def _compute_month_in_service_and_years_in_service(self):
@@ -56,9 +75,11 @@ class SHrEmployee(models.Model):
                 day_in_service = datetime.now().day - rec.s_date_hired.day
                 year_in_service = datetime.now().year - rec.s_date_hired.year
                 if day_in_service < 0:
-                    rec.s_month_in_service = (datetime.now().month - rec.s_date_hired.month - 1) + year_in_service*12 if (datetime.now().month - rec.s_date_hired.month - 1) > 0 else 0
+                    rec.s_month_in_service = (
+                                                         datetime.now().month - rec.s_date_hired.month - 1) + year_in_service * 12 if (
+                                                                                                                                                  datetime.now().month - rec.s_date_hired.month - 1) > 0 else 0
                 else:
-                    rec.s_month_in_service = (datetime.now().month - rec.s_date_hired.month) + year_in_service*12
+                    rec.s_month_in_service = (datetime.now().month - rec.s_date_hired.month) + year_in_service * 12
                 rec.s_years_in_service = year_in_service
             else:
                 rec.s_month_in_service = 0
@@ -162,7 +183,7 @@ class SHrEmployee(models.Model):
         string='Payroll Schedule', required=True)
     # s_period_group = fields.Many2one(string="Period Group")
     # s_rate_classification = fields.Many2one(string="Rate Classification")
-    s_minimum_take_home = fields.Float(string='Minimum Take Home', size=15)
+    s_minimum_take_home = fields.Float(string='Minimum Take Home')
     s_cost_center = fields.Char(string='Cost Center', size=50)
     s_mode_of_payment = fields.Selection([('cash', 'Cash'), ('bank', 'Bank'), ('cheque', 'Cheque')],
                                          string='Mode of Payment')
@@ -171,6 +192,30 @@ class SHrEmployee(models.Model):
     s_minimum_take_home_as_percentage_textbox = fields.Float(string='Enter Minimum Take Home as Percentage')
     s_compensation_benefit_ids = fields.One2many('s.compensation.benefit', 's_hr_compensation_benefit_id',
                                                  string='Other Compensation and Benefits')
+
+    @api.constrains('s_minimum_take_home')
+    def _check_float_field_s_minimum_take_home(self):
+        for record in self:
+            if len(str(record.s_minimum_take_home)) > 15:
+                raise (ValidationError("Field Minimum Take Home must be less than or equal to 15 characters."))
+
+    @api.constrains('s_minimum_take_home_as_percentage')
+    def _check_float_field_s_minimum_take_home_as_percentage(self):
+        for record in self:
+            if len(str(record.s_minimum_take_home_as_percentage)) > 4:
+                raise ValidationError("Field Minimum Take Home as Percentage must be less than or equal to 4 characters.")
+
+    @api.constrains('s_monthly_rate')
+    def _check_float_field_s_monthly_rate(self):
+        for record in self:
+            if len(str(record.s_monthly_rate)) > 12:
+                raise ValidationError("Field Monthly Rate must be less than or equal to 12 characters.")
+
+    @api.constrains('s_is_other')
+    def _check_float_field_s_is_other(self):
+        for record in self:
+            if len(str(record.s_is_other)) > 5:
+                raise ValidationError("Field Total Year days must be less than or equal to 5 characters.")
 
     @api.onchange('s_total_year_days')
     def _onchange_s_total_year_days(self):

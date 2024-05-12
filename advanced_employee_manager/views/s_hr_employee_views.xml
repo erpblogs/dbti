@@ -160,6 +160,7 @@
                 <page name="work_preferences_and_attributes" string="Work Preferences and Attributes">
                     <group>
                         <group>
+                            <field name="s_employee_id"/>
                             <field name="s_part_time_only"/>
                             <field name="s_attendance_base"/>
                             <field name="s_ignore_late"/>
@@ -328,11 +329,9 @@
                 <attribute name="column_invisible">1</attribute>
             </xpath>
 
-<!--            start ẩn fields company trong employee list-->
             <xpath expr="//field[@name='company_id']" position="attributes">
                 <attribute name="column_invisible">1</attribute>
             </xpath>
-<!--            end ẩn fields company trong employee list-->
 
             <xpath expr="//field[@name='work_phone']" position="attributes">
                 <attribute name="column_invisible">1</attribute>
