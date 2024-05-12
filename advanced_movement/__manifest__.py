@@ -19,8 +19,6 @@
         'wizard/movement_stage_views.xml',
         'views/approval_flow_views.xml',
         'views/approval_role_views.xml',
-
-        'views/s_job_rotation_request.xml',
         'views/movement_menu_viewx.xml',
     ],
     'assets': {

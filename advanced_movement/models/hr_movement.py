@@ -68,7 +68,7 @@ class HrMovement(models.Model):
     current_rate_classification = fields.Char(string="Current Rate Classification")
     current_period_group = fields.Char(string="Current Period Group")
     current_payroll_schedule = fields.Char(string="Current Payroll Schedule")
-    current_attendance_based = fields.Boolean(string="Current Attendance Based")
+    # current_attendance_based = fields.Boolean(string="Current Attendance Based")
     current_date_hired = fields.Char(string="Current Date Hired")
 
     new_company = fields.Char(string="New Company")
@@ -77,7 +77,7 @@ class HrMovement(models.Model):
     new_location = fields.Char(string="New Location")
     new_position_title = fields.Char(string="New Position Title")
     new_employee_status = fields.Char(string="New Employee Status")
-    new_position_title_ids = fields.Char(string="New Position Title")
+    # new_position_title_ids = fields.Char(string="New Position Title")
     new_job_level_ids = fields.Char(string="New Job Levl")
 
     new_rate_classification = fields.Char(string="New Rate Classification")
@@ -115,9 +115,9 @@ class HrMovement(models.Model):
     # s_current_period_group = fields.Char(string="Current Period Group", related='s_employee_name.s_period_group', store=True)
     s_current_payroll_schedule = fields.Selection(string="Current Payroll Schedule",
                                                   related='s_employee_name.s_payroll_schedule', store=True)
-    # s_current_attendance_based = fields.Boolean(string="Current Attendance Based", related='s_employee_name.s_payroll_schedule', store=True)
+    s_current_attendance_based = fields.Boolean(string="Current Attendance Based", related='s_employee_name.s_attendance_base', store=True)
     # s_new_job_level = fields.Boolean(string="New Job Level", related='s_employee_name.s_payroll_schedule', store=True)
-    # s_new_position_title = fields.Boolean(string="New Position Title", related='s_employee_name.s_payroll_schedule', store=True)
+    s_new_position_title = fields.Many2one('', string="New Position Title")
     s_new_rate_type = fields.Selection(
         [('hourly_rate', 'Hourly Rate'), ('daily_rate', 'Daily Rate'), ('monthly_rate', 'Monthly Rate')],
         string="New Rate Type")
@@ -135,6 +135,7 @@ class HrMovement(models.Model):
         [('semi_monthly', 'Semi-Monthly'), ('monthly', 'Monthly'), ('weekly', 'Weekly')], string="New Payroll Schedule")
     s_is_processed = fields.Boolean(string="Is Processed", default=False)
     is_type_job_rotation_request = fields.Boolean(string="Is Type Job Rotation Request")
+    is_type_regularization_request = fields.Boolean(string="Is Type Regularization Request")
 
     #start field dùng để ẩn button
     is_invisible_button = fields.Boolean(string="Is Invisible Button", compute="_compute_invisible_button")
@@ -175,8 +176,6 @@ class HrMovement(models.Model):
     def _compute_name(self):
         for r in self:
             r.name = str(r.used_id.name) + ' on ' + str(r.movement_type_id.movement_type)
-
-
 
     @api.depends('status')
     def _compute_approved_date(self):

@@ -26,10 +26,14 @@
             <form string="Hr Movement Form">
                 <header>
                     <field name="is_invisible_button" invisible="1"/>
-                    <button string="To Approve" name="action_confirm_movement" type="object" class="oe_highlight" invisible="status != 'to_submit'"/>
-                    <button string="Approved" name="action_approved_movement" type="object" class="oe_highlight" invisible="is_invisible_button == False"/>
-                    <button string="Refuse" name="action_refused_movement" type="object" invisible="is_invisible_button == False"/>
-                    <button string="Mark as Draft" name="action_draft_movement" type="object" invisible="status != 'refuse'"/>
+                    <button string="To Approve" name="action_confirm_movement" type="object" class="oe_highlight"
+                            invisible="status != 'to_submit'"/>
+                    <button string="Approved" name="action_approved_movement" type="object" class="oe_highlight"
+                            invisible="is_invisible_button == False"/>
+                    <button string="Refuse" name="action_refused_movement" type="object"
+                            invisible="is_invisible_button == False"/>
+                    <button string="Mark as Draft" name="action_draft_movement" type="object"
+                            invisible="status != 'refuse'"/>
                     <field name="status" widget="statusbar" statusbar_visible="to_approve,refused,approved"/>
                 </header>
                 <sheet>
@@ -54,31 +58,60 @@
                     <group>
                         <field name="remark"/>
                         <field name="is_type_job_rotation_request" invisible="1"/>
+                        <field name="is_type_regularization_request" invisible="1"/>
                     </group>
                     <group class="job_rotation_request" invisible="is_type_job_rotation_request == False">
                         <group>
-                                <field name="s_current_position"/>
-                                <field name="s_current_job_level"/>
-                                <field name="s_current_rate_type"/>
-                                <field name="s_current_rate"/>
-                                <field name="s_current_minimum_take_home"/>
-                                <field name="s_current_cost_center"/>
-                                <field name="s_current_total_year_days"/>
-                                <field name="s_current_no_hours"/>
-                                <field name="s_current_payroll_schedule"/>
-                            </group>
-                            <group>
-                                <field name="s_new_rate_type" required="is_type_job_rotation_request == True"/>
-                                <field name="s_new_rate"/>
-                                <field name="s_new_minimum_take_home"/>
-                                <field name="s_new_cost_center" required="is_type_job_rotation_request == True"/>
-                                <field name="s_new_total_year_days" required="is_type_job_rotation_request == True"/>
-                                <field name="s_is_other_total_year_days" invisible="1"/>
-                                <field name="s_other_total_year_days" invisible="not s_is_other_total_year_days"/>
-                                <field name="s_new_no_hours"/>
-                                <field name="s_new_payroll_schedule" invisible="not s_is_other_total_year_days"/>
-                                <field name="s_is_processed"/>
-                            </group>
+                            <field name="s_current_position"/>
+                            <field name="s_current_job_level"/>
+                            <field name="s_current_rate_type"/>
+                            <field name="s_current_rate"/>
+                            <field name="s_current_minimum_take_home"/>
+                            <field name="s_current_cost_center"/>
+                            <field name="s_current_total_year_days"/>
+                            <field name="s_current_no_hours"/>
+                            <field name="s_current_payroll_schedule"/>
+                        </group>
+                        <group>
+                            <field name="s_new_rate_type" required="is_type_job_rotation_request == True"/>
+                            <field name="s_new_rate"/>
+                            <field name="s_new_minimum_take_home"/>
+                            <field name="s_new_cost_center" required="is_type_job_rotation_request == True"/>
+                            <field name="s_new_total_year_days" required="is_type_job_rotation_request == True"/>
+                            <field name="s_is_other_total_year_days" invisible="1"/>
+                            <field name="s_other_total_year_days" invisible="not s_is_other_total_year_days"/>
+                            <field name="s_new_no_hours" required="is_type_job_rotation_request == True"/>
+                            <field name="s_new_payroll_schedule" required="is_type_job_rotation_request == True"/>
+                            <field name="s_is_processed"/>
+                        </group>
+                    </group>
+
+                    <group class="regularization_request" invisible="is_type_regularization_request == False">
+                        <group>
+                            <field name="current_employee_status"/>
+                            <field name="s_current_position" string="Current Position Title"/>
+                            <field name="s_current_job_level"/>
+                            <field name="s_current_rate_type"/>
+                            <field name="s_current_rate"/>
+                            <field name="s_current_no_hours"/>
+                            <field name="s_current_minimum_take_home"/>
+                            <field name="s_current_cost_center"/>
+                            <field name="s_current_total_year_days"/>
+<!--                            <field name="s_current_payroll_schedule"/>-->
+                            <field name="s_current_attendance_based"/>
+                        </group>
+                        <group>
+                            <field name="s_new_rate_type" required="is_type_regularization_request == True"/>
+                            <field name="s_new_rate"/>
+                            <field name="s_new_no_hours"/>
+                            <field name="s_new_minimum_take_home"/>
+                            <field name="s_new_cost_center" required="is_type_regularization_request == True"/>
+                            <field name="s_new_total_year_days" required="is_type_regularization_request == True"/>
+                            <field name="s_is_other_total_year_days" invisible="1"/>
+                            <field name="s_other_total_year_days" invisible="not s_is_other_total_year_days"/>
+<!--                            <field name="s_new_payroll_schedule" invisible="not s_is_other_total_year_days"/>-->
+                            <field name="s_is_processed"/>
+                        </group>
                     </group>
 
                 </sheet>
