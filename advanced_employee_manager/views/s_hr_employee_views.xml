@@ -328,11 +328,9 @@
                 <attribute name="column_invisible">1</attribute>
             </xpath>
 
-<!--            start ẩn fields company trong employee list-->
             <xpath expr="//field[@name='company_id']" position="attributes">
                 <attribute name="column_invisible">1</attribute>
             </xpath>
-<!--            end ẩn fields company trong employee list-->
 
             <xpath expr="//field[@name='work_phone']" position="attributes">
                 <attribute name="column_invisible">1</attribute>
