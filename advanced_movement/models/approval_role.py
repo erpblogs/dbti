@@ -6,7 +6,8 @@ class ApprovalRole(models.Model):
     _description = "Approval Role"
     _inherit = "mail.thread"
     _rec_name = "position_role"
-    
+
     position_role = fields.Char(string="Position/Role")
-    user_ids = fields.Many2many("hr.employee", "approval_role_id", string="Users(s)")
+    user_ids = fields.Many2many("res.users", "approval_role_res_users_rel", string="Users(s)")
     company_id = fields.Many2one("res.company", string="Company")
+
