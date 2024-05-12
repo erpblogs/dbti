@@ -47,9 +47,6 @@ class HrMovement(models.Model):
     )
 
     current_company = fields.Char(string="Current Company")
-    current_department = fields.Char(string="Current Department")
-    current_job_grade = fields.Char(string="Current Job Grade")
-    current_location = fields.Char(string="Current Location")
     current_position_title = fields.Char(string="Current Position Title")
     current_employee_status = fields.Selection([
         ('active', 'Active'),
@@ -62,22 +59,14 @@ class HrMovement(models.Model):
     ], string='Current Employee Status', compute='_compute_employee_status', store=True
     )
 
-    current_cost_center = fields.Integer(string="Current Cost Center")
-    current_total_year_days = fields.Float(string="Current Total Year Days")
     current_no_hours = fields.Float(string="Current No.Hours")
     current_rate_classification = fields.Char(string="Current Rate Classification")
     current_period_group = fields.Char(string="Current Period Group")
-    current_payroll_schedule = fields.Char(string="Current Payroll Schedule")
-    # current_attendance_based = fields.Boolean(string="Current Attendance Based")
-    current_date_hired = fields.Char(string="Current Date Hired")
 
-    new_company = fields.Char(string="New Company")
-    new_department = fields.Char(string="New Department")
-    new_job_grade = fields.Char(string="New Job Grade")
-    new_location = fields.Char(string="New Location")
-    new_position_title = fields.Char(string="New Position Title")
-    new_employee_status = fields.Char(string="New Employee Status")
-    # new_position_title_ids = fields.Char(string="New Position Title")
+    s_new_employee_status = fields.Selection(
+        [('active', 'Active'), ('inactive', 'Inactive'), ('retire', 'Retire'), ('resign', 'Resign'),
+         ('terminated', 'Terminated'), ('end_of_contract', 'End of contract'), ('on_hold', 'On hold')],
+        string="New Employee Status")
     new_job_level_ids = fields.Char(string="New Job Levl")
 
     new_rate_classification = fields.Char(string="New Rate Classification")
@@ -95,12 +84,11 @@ class HrMovement(models.Model):
     new_phic_frequency = fields.Char(String="New PHIC Frequency")
     new_whtax_mode = fields.Char(string="New WHTax Mode")
     new_whtax_frequency = fields.Char(string="New WHTax Mode")
-    new_date_hired = fields.Char(string="New Date Hired")
+    s_new_date_hired = fields.Datetime(string="New Date Hired")
 
     s_current_position = fields.Many2one(string="Current Position", related='s_employee_name.s_position_title',
                                          store=True)
-    s_type = fields.Selection([('other', 'Other'), ('upgrade', 'Upgrade')], string="Type", default="other",
-                              required=True, tracking=True)
+    s_type = fields.Selection([('other', 'Other'), ('upgrade', 'Upgrade')], string="Type", default="other")
     s_current_job_level = fields.Many2one(string="Current Job Level", related='s_employee_name.s_job_level', store=True)
     s_current_rate_type = fields.Selection(string="Current Rate Type", related='s_employee_name.s_rate_type',
                                            store=True)
@@ -115,9 +103,10 @@ class HrMovement(models.Model):
     # s_current_period_group = fields.Char(string="Current Period Group", related='s_employee_name.s_period_group', store=True)
     s_current_payroll_schedule = fields.Selection(string="Current Payroll Schedule",
                                                   related='s_employee_name.s_payroll_schedule', store=True)
-    s_current_attendance_based = fields.Boolean(string="Current Attendance Based", related='s_employee_name.s_attendance_base', store=True)
-    # s_new_job_level = fields.Boolean(string="New Job Level", related='s_employee_name.s_payroll_schedule', store=True)
-    s_new_position_title = fields.Many2one('', string="New Position Title")
+    s_current_attendance_based = fields.Boolean(string="Current Attendance Based",
+                                                related='s_employee_name.s_attendance_base', store=True)
+    s_new_job_level = fields.Many2one('hr.job.level', string="New Job Level")
+    s_new_position_title = fields.Many2one('hr.job', string="New Position Title")
     s_new_rate_type = fields.Selection(
         [('hourly_rate', 'Hourly Rate'), ('daily_rate', 'Daily Rate'), ('monthly_rate', 'Monthly Rate')],
         string="New Rate Type")
@@ -134,15 +123,34 @@ class HrMovement(models.Model):
     s_new_payroll_schedule = fields.Selection(
         [('semi_monthly', 'Semi-Monthly'), ('monthly', 'Monthly'), ('weekly', 'Weekly')], string="New Payroll Schedule")
     s_is_processed = fields.Boolean(string="Is Processed", default=False)
+    s_current_department = fields.Many2one(string="Current Department", related='s_employee_name.s_department',
+                                           store=True)
+    s_transfer_type = fields.Selection([('temporary', 'Temporary'), ('lateral', 'Lateral')], string="Transfer Type")
+    s_salary_adjustment_type = fields.Selection(
+        [('merit_increase', 'Merit Increase'), ('salary_adjustment', 'Salary Adjustment'),
+         ('promotional_increase', 'Promotional Increase')], string="Salary Adjustment Type")
+    s_current_location = fields.Many2one(string="Current Location", related='s_employee_name.s_location', store=True)
+    s_current_date_hired = fields.Datetime(string="Current Date Hired", related='s_employee_name.s_date_hired',
+                                           store=True)
+    s_new_end_of_contract = fields.Datetime(string="New End of Contract")
+    s_current_employee_status = fields.Selection(string="Current Employment Status",
+                                                 related='s_employee_name.s_employee_status', store=True)
+    s_new_company = fields.Many2one('res.company', string="New Company")
+    s_new_department = fields.Many2one('hr.department', string="New Department")
+    s_new_location = fields.Many2one('hr.work.location', string="New Location")
     is_type_job_rotation_request = fields.Boolean(string="Is Type Job Rotation Request")
     is_type_regularization_request = fields.Boolean(string="Is Type Regularization Request")
+    is_type_transfer_request = fields.Boolean(string="Is Type Transfer Request")
+    is_type_salary_adjustment_request = fields.Boolean(string="Is Type Salary Adjustment request")
+    is_type_extension_of_service_request = fields.Boolean(string="Is Type Extension of Service request")
 
-    #start field dùng để ẩn button
+    # start field dùng để ẩn button
     is_invisible_button = fields.Boolean(string="Is Invisible Button", compute="_compute_invisible_button")
     action_user_ids = fields.One2many('hr.movement.user', 'movement_id', string='Action Users')
-    #end field dùng để ẩn button
 
-    #start logic màn job_rotation_request
+    # end field dùng để ẩn button
+
+    # start logic màn job_rotation_request
     @api.constrains('s_other_total_year_days')
     def constrain_s_other_total_year_days(self):
         for rec in self:
@@ -160,17 +168,28 @@ class HrMovement(models.Model):
     @api.constrains('s_new_no_hours')
     def constrain_s_new_no_hours(self):
         for rec in self:
-            if rec.s_new_no_hours == 0 and rec.is_type_job_rotation_request:
+            if rec.s_new_no_hours == 0 and (rec.is_type_job_rotation_request or rec.is_type_regularization_request):
                 raise ValidationError("The value of Hours must be different from 0.")
 
     @api.onchange('movement_type_id')
     def onchange_movement_type_id(self):
         for rec in self:
+            rec.is_type_job_rotation_request = False
+            rec.is_type_regularization_request = False
+            rec.is_type_transfer_request = False
+            rec.is_type_salary_adjustment_request = False
             if rec.movement_type_id.is_type_job_rotation_request:
                 rec.is_type_job_rotation_request = True
-            else:
-                rec.is_type_job_rotation_request = False
-    #end logic màn job_rotation_request
+            elif rec.movement_type_id.is_type_regularization_request:
+                rec.is_type_regularization_request = True
+            elif rec.movement_type_id.is_type_transfer_request:
+                rec.is_type_transfer_request = True
+            elif rec.movement_type_id.is_type_salary_adjustment_request:
+                rec.is_type_salary_adjustment_request = True
+            elif rec.movement_type_id.is_type_extension_of_service_request:
+                rec.is_type_extension_of_service_request = True
+
+    # end logic màn job_rotation_request
 
     @api.depends('movement_type_id', 'used_id')
     def _compute_name(self):
@@ -198,7 +217,7 @@ class HrMovement(models.Model):
                     r.s_employee_name.write({'s_employee_status': 'active'})
                     r.current_employee_status = r.s_employee_name.s_employee_status
 
-    #start logic button movement
+    # start logic button movement
     def create(self, vals):
         res = super(HrMovement, self).create(vals)
         if res.movement_type_id:
@@ -216,67 +235,54 @@ class HrMovement(models.Model):
     def _compute_invisible_button(self):
         for rec in self:
             rec.is_invisible_button = False
-            ids_approve = []
-            movement_type_id, stage_id, approvers = False, False, False
-            if rec.movement_type_id:
-                movement_type_id = rec.movement_type_id
-                if movement_type_id.stage_id:
-                    stage_id = movement_type_id.stage_id.sorted('sequence')
-                    if stage_id.approvers:
-                        approvers = stage_id.approvers
-                        ids_approve = approvers.ids
-            user_id = rec.env.uid
-            if rec.status not in ['refused', 'approved'] and rec.status == 'to_approve':
-                if user_id in ids_approve:
-                    if movement_type_id.sequence:
-                        count = 0
+            if rec.movement_type_id and rec.status not in ['refused', 'approved'] and rec.status == 'to_approve':
+                stage_id = rec.movement_type_id.stage_id.sorted('sequence')
+                if stage_id and stage_id.approvers:
+                    ids_approve = stage_id.approvers.ids
+                    user_id = rec.env.uid
+                    if user_id in ids_approve:
                         index_user_id = ids_approve.index(user_id)
-                        if index_user_id > 0:
-                            for i in range(0, index_user_id):
-                                hr_movement_user = rec.action_user_ids.filtered(lambda r: r.user_id == approvers[i])
-                                if hr_movement_user:
-                                    if hr_movement_user.status == 'approved':
-                                        count += 1
-                                    elif hr_movement_user.status == 'refused':
-                                        break
-                        elif index_user_id == 0:
-                            hr_movement_user = rec.action_user_ids.filtered(lambda r: r.user_id == approvers[0])
-                            if hr_movement_user:
-                                if hr_movement_user.status:
-                                    rec.is_invisible_button = False
-                                else:
-                                    rec.is_invisible_button = True
-                        if count == index_user_id and count > 0:
+                        if rec.movement_type_id.sequence:
+                            count = sum(1 for i in range(0, index_user_id) if rec.action_user_ids.filtered(
+                                lambda r: r.user_id == stage_id.approvers[i] and r.status == 'approved'))
+                            if count == index_user_id and not rec.action_user_ids.filtered(
+                                    lambda r: r.user_id.id == rec.env.uid and r.status):
+                                rec.is_invisible_button = True
+                        elif rec.movement_type_id.parallel:
                             rec.is_invisible_button = True
-                    elif movement_type_id.parallel:
-                        rec.is_invisible_button = True
+                else:
+                    rec.write({'status': 'approved'})
 
     def action_draft_movement(self):
         for rec in self:
-            rec.write({'status': 'draft'})
+            rec.write({'status': 'to_submit'})
         return True
 
     def action_confirm_movement(self):
-        for r in self:
-            if r.status != 'to_submit':
+        for rec in self:
+            if rec.status != 'to_submit':
                 raise UserError(_("You can not approve while its status is not Submit."))
+            rec.action_user_ids.write({'status': False})
         self.write({'status': 'to_approve'})
         return True
 
     def action_approved_movement(self):
         for rec in self:
-            all_status_user = rec.action_user_ids.mapped('status')
             user = rec.action_user_ids.filtered(lambda r: r.user_id == rec.env.user)
             if user:
-                user.write({'status': 'approved'})
+                user.status = 'approved'
+            all_status_user = rec.action_user_ids.mapped('status')
             if all([status == 'approved' for status in all_status_user]):
                 rec.write({'status': 'approved'})
         return True
 
     def action_refused_movement(self):
         for rec in self:
+            user = rec.action_user_ids.filtered(lambda r: r.user_id == rec.env.user)
+            if user:
+                user.status = 'refused'
             all_status_user = rec.action_user_ids.mapped('status')
-            if ([status == 'refuse'] for status in all_status_user):
+            if ([status == 'refused'] for status in all_status_user):
                 rec.write({'status': 'refused'})
         return True
-    #end logic button movement
+    # end logic button movement
