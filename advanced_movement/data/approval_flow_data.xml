@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
-	<record id="job_rotation" model="approval.flow">
-		<field name="movement_type">Job Rotation</field>
-	</record>
-	<record id="regulazition" model="approval.flow">
-		<field name="movement_type">Regulazition</field>
-	</record>
-	<record id="transfer" model="approval.flow">
-		<field name="movement_type">Transfer</field>
-	</record>
-	<record id="salary_adjustment" model="approval.flow">
-		<field name="movement_type">Salary Adjustment</field>
-	</record>
-	<record id="retirement" model="approval.flow">
-		<field name="movement_type">Retirement</field>
-	</record>
-	<record id="resignation" model="approval.flow">
-		<field name="movement_type">Resignation</field>
-	</record>
-	<record id="termination" model="approval.flow">
-		<field name="movement_type">Termination</field>
-	</record>
-	<record id="end_of_contract" model="approval.flow">
-		<field name="movement_type">End of Contract</field>
-	</record>
-	<record id="rehire" model="approval.flow">
-		<field name="movement_type">Rehire</field>
-	</record>
-	<record id="extension_of_service" model="approval.flow">
-		<field name="movement_type">Extension of Service</field>
-	</record>
+    <record id="job_rotation" model="approval.flow">
+        <field name="movement_type">Job Rotation</field>
+        <field name="is_type_job_rotation_request">True</field>
+    </record>
+    <record id="regulazition" model="approval.flow">
+        <field name="movement_type">Regulazition</field>
+        <field name="is_type_regularization_request">True</field>
+    </record>
+    <record id="transfer" model="approval.flow">
+        <field name="movement_type">Transfer</field>
+    </record>
+    <record id="salary_adjustment" model="approval.flow">
+        <field name="movement_type">Salary Adjustment</field>
+    </record>
+    <record id="retirement" model="approval.flow">
+        <field name="movement_type">Retirement</field>
+    </record>
+    <record id="resignation" model="approval.flow">
+        <field name="movement_type">Resignation</field>
+    </record>
+    <record id="termination" model="approval.flow">
+        <field name="movement_type">Termination</field>
+    </record>
+    <record id="end_of_contract" model="approval.flow">
+        <field name="movement_type">End of Contract</field>
+    </record>
+    <record id="rehire" model="approval.flow">
+        <field name="movement_type">Rehire</field>
+    </record>
+    <record id="extension_of_service" model="approval.flow">
+        <field name="movement_type">Extension of Service</field>
+    </record>
 </odoo>

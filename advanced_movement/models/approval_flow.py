@@ -13,6 +13,7 @@ class ApprovalFlow(models.Model):
     parallel = fields.Boolean(string="Parallel")
     stage_id = fields.One2many("movement.stage", "approval_flow_id", string="Stage Name")
     is_type_job_rotation_request = fields.Boolean(string="Is Type Job Rotation Request")
+    is_type_regularization_request = fields.Boolean(string="Is Type Regularization Request")
     approve_hr_movement_ids = fields.One2many("hr.movement", "movement_type_id", string="Approve Movement Type")
 
     @api.onchange('sequence')
