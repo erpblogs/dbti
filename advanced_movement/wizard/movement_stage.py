@@ -6,11 +6,10 @@ class Stage(models.Model):
     _description = " Movement Stage "
     _order = "sequence"
 
-    name = fields.Char(string="Stage Title", size=100, required=True)
     approval_role_id = fields.Many2one("approval.role", string="Stage Name", required=True)
     s_hr_employee_id = fields.Many2one("hr.employee")
-    approvers = fields.Many2one('res.users', string="Approvers(Predefined)")
-    user_ids = fields.Many2many('res.users', "movement_stage_id", "res_users_id", string="Users", related="approval_role_id.user_ids")
+    approval_type = fields.Char(string="Approval Type", size=100, required=True)
+    approvers = fields.Many2one('res.users', string="Approvers(Predefined)", required=True)
     sequence = fields.Char(string="Sequence")
     approval_flow_id = fields.Many2one("approval.flow", string="Approval Flow")
     is_approver = fields.Boolean(string="Is Approver")

@@ -14,6 +14,9 @@ class ApprovalFlow(models.Model):
     stage_id = fields.One2many("movement.stage", "approval_flow_id", string="Stage Name")
     is_type_job_rotation_request = fields.Boolean(string="Is Type Job Rotation Request")
     is_type_regularization_request = fields.Boolean(string="Is Type Regularization Request")
+    is_type_transfer_request = fields.Boolean(string="Is Type Transfer Request")
+    is_type_salary_adjustment_request = fields.Boolean(string="Is Type Salary Adjustment request")
+    is_type_extension_of_service_request = fields.Boolean(string="Is Type Extension of Service request")
     approve_hr_movement_ids = fields.One2many("hr.movement", "movement_type_id", string="Approve Movement Type")
 
     @api.onchange('sequence')
@@ -36,7 +39,7 @@ class ApprovalFlow(models.Model):
         stage_id = self.stage_id
         if approve_hr_movement_ids:
             for approve_hr_movement_id in approve_hr_movement_ids:
-                for user_approve in stage_id.user_ids:
+                for user_approve in stage_id.approvers:
                     if user_approve not in approve_hr_movement_id.action_user_ids.user_id:
                         approve_hr_movement_id.action_user_ids = [(0, 0, {'user_id': user_approve.id})]
         return res
