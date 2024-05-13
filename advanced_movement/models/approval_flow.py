@@ -36,7 +36,7 @@ class ApprovalFlow(models.Model):
         stage_id = self.stage_id
         if approve_hr_movement_ids:
             for approve_hr_movement_id in approve_hr_movement_ids:
-                for user_approve in stage_id.approvers:
+                for user_approve in stage_id.user_ids:
                     if user_approve not in approve_hr_movement_id.action_user_ids.user_id:
                         approve_hr_movement_id.action_user_ids = [(0, 0, {'user_id': user_approve.id})]
         return res
