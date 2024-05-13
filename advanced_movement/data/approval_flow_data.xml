@@ -10,11 +10,9 @@
     </record>
     <record id="transfer" model="approval.flow">
         <field name="movement_type">Transfer</field>
-        <field name="is_type_transfer_request">True</field>
     </record>
     <record id="salary_adjustment" model="approval.flow">
         <field name="movement_type">Salary Adjustment</field>
-        <field name="is_type_salary_adjustment_request">True</field>
     </record>
     <record id="retirement" model="approval.flow">
         <field name="movement_type">Retirement</field>
@@ -33,6 +31,5 @@
     </record>
     <record id="extension_of_service" model="approval.flow">
         <field name="movement_type">Extension of Service</field>
-        <field name="is_type_extension_of_service_request">True</field>
     </record>
 </odoo>

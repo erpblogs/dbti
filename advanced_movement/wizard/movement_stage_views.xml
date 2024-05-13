@@ -12,7 +12,6 @@
 	            	</div>
 					<group>
 						<group>
-							<field name="approval_type"/>
 							<field name="approvers"/>
 						</group>
 						<group>
@@ -30,7 +29,6 @@
 		<field name="arch" type="xml">
 			<tree string="Movemen Stage Form">
 				<field name="approval_role_id"/>
-				<field name="approval_type"/>
 				<field name="approvers"/>
 				<button name="unlink" type="object"/>
 			</tree>
