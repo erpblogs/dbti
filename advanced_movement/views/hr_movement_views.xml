@@ -34,9 +34,7 @@
                             invisible="status not in ['to_approve','approved']"/>
                     <button string="Mark as Draft" name="action_draft_movement" type="object"
                             invisible="status !='refused'"/>
-                    <!-- <field name="status" widget="statusbar" statusbar_visible="to_approve,refused,approved"/> -->
-                    <field name="status" invisible="1"/>
-                    <field name="approvers" widget="statusbar" options="{'clickable': '1'}"/>
+                    <field name="status" widget="statusbar" statusbar_visible="to_approve,refused,approved"/>
                 </header>
                 <sheet>
                     <group class="form_base_movement">

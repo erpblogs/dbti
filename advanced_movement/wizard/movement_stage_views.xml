@@ -8,11 +8,12 @@
 				<sheet>
 					<div class="oe_title">
 	            		<h5><label for="approval_role_id" string="Stage Title"/></h5>
-	            		<field name="approval_role_id" placeholder="Stage Title" required="1" class="o_user_style"/>
+	            		<field name="name" placeholder="Stage Title" required="1" class="o_user_style"/>
 	            	</div>
+	            	<br/>
 					<group>
 						<group>
-							<field name="approvers"/>
+							<field name="approval_role_id"/>
 						</group>
 						<group>
 							<field name="sequence"/>
@@ -28,8 +29,9 @@
 		<field name="model">movement.stage</field>
 		<field name="arch" type="xml">
 			<tree string="Movemen Stage Form">
+				<field name="name"/>
 				<field name="approval_role_id"/>
-				<field name="approvers"/>
+				<field name="user_ids" widget="many2many_tags" options="{'no_create': True, 'color_field': 'color'}"/>
 				<button name="unlink" type="object"/>
 			</tree>
 		</field>
