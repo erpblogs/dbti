@@ -4,13 +4,13 @@
 		<field name="name">approval.role.form.views</field>
 		<field name="model">approval.role</field>
 		<field name="arch" type="xml">
-			<form string="Approval role Form">
+			<form string="Approval role Form" duplicate="false">
 				<sheet>
 					<group>
 						<group>
-							<field name="position_role"/>
-							<field name="user_ids" widget="many2many_tags" options="{'no_create': True, 'color_field': 'color'}"/>
 							<field name="company_id"/>
+							<field name="position_role_id"/>
+							<field name="user_ids" widget="many2many_tags" options="{'no_create': True, 'color_field': 'color'}"/>
 						</group>
 					</group>
 				</sheet>
@@ -26,16 +26,17 @@
 		<field name="name">approval.role.form.views</field>
 		<field name="model">approval.role</field>
 		<field name="arch" type="xml">
-			<tree string="Approval role Tree">
-				<field name="position_role"/>
-				<field name="user_ids" widget="many2many_tags" options="{'no_create': True, 'color_field': 'color'}"/>
+			<tree string="Approval role Tree" duplicate="false">
 				<field name="company_id"/>
+				<field name="position_role_id"/>
+				<field name="user_ids" widget="many2many_tags" options="{'no_create': True, 'color_field': 'color'}"/>
+				
 			</tree>
 		</field>
 	</record>
 	
 	<record id="action_approval_role" model="ir.actions.act_window">
-		<field name="name">Approval role</field>
+		<field name="name">Approval Role</field>
 		<field name="res_model">approval.role</field>
 		<field name="view_mode">tree,form</field>
 		<field name="view_id" ref="approval_role_tree_views"/>

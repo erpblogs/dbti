@@ -8,7 +8,7 @@ class ApprovalFlow(models.Model):
     _rec_name = "movement_type"
 
     movement_type = fields.Char(string="Movement Type", readonly=True)
-    company_id = fields.Many2one("res.company", string="Company")
+    company_id = fields.Many2one("res.company", string="Company", default=lambda self: self.env.company)
     sequence = fields.Boolean(string="Sequence")
     parallel = fields.Boolean(string="Parallel")
     stage_id = fields.One2many("movement.stage", "approval_flow_id", string="Stage Name")
@@ -39,7 +39,7 @@ class ApprovalFlow(models.Model):
         stage_id = self.stage_id
         if approve_hr_movement_ids:
             for approve_hr_movement_id in approve_hr_movement_ids:
-                for user_approve in stage_id.approvers:
+                for user_approve in stage_id.user_ids:
                     if user_approve not in approve_hr_movement_id.action_user_ids.user_id:
                         approve_hr_movement_id.action_user_ids = [(0, 0, {'user_id': user_approve.id})]
         return res

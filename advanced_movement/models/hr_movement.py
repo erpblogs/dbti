@@ -26,7 +26,7 @@ class HrMovement(models.Model):
         ('to_approve', 'To Approve'),
         ('refused', 'Refused'),
         ('approved', 'Approved')
-    ], string="Status", default="to_approve", required=True, tracking=True)
+    ], string="Status", default="to_submit", required=True, tracking=True)
     department_id = fields.Many2one("hr.department", string="Department ID")
     salary_adjustment_type = fields.Char(string="Salary Adjustment Type")
     retirement_type = fields.Selection([
@@ -213,17 +213,26 @@ class HrMovement(models.Model):
 
     @api.depends('status')
     def _compute_employee_status(self):
-        current_emp_status = self.s_employee_name.s_employee_status
         for r in self:
             if r.status != "approved":
-                r.s_employee_name.write({'s_employee_status': 'retire'})
                 r.current_employee_status = r.s_employee_name.s_employee_status
             else:
                 if r.approved_date < r.effective_date:
                     r.current_employee_status = r.s_employee_name.s_employee_status
                 else:
-                    r.s_employee_name.write({'s_employee_status': 'active'})
-                    r.current_employee_status = r.s_employee_name.s_employee_status
+                    movement_type = r.movement_type_id.movement_type
+                    if movement_type == "Retirement":
+                        r.s_employee_name.write({'s_employee_status': 'retire'})
+                        r.current_employee_status = r.s_employee_name.s_employee_status
+                    if movement_type == "Resignation":
+                        r.s_employee_name.write({'s_employee_status': 'resign'})
+                        r.current_employee_status = r.s_employee_name.s_employee_status
+                    if movement_type == "Termination":
+                        r.s_employee_name.write({'s_employee_status': 'terminated'})
+                        r.current_employee_status = r.s_employee_name.s_employee_status
+                    if movement_type == "End of Contract":
+                        r.s_employee_name.write({'s_employee_status': 'end_of_contract'})
+                        r.current_employee_status = r.s_employee_name.s_employee_status
 
     # start logic button movement
     def create(self, vals):
@@ -232,8 +241,8 @@ class HrMovement(models.Model):
             movement_type_id = res.movement_type_id
             if movement_type_id.stage_id:
                 stage_id = movement_type_id.stage_id
-                if stage_id.approvers:
-                    approvers = stage_id.approvers
+                if stage_id.user_ids:
+                    approvers = stage_id.user_ids
                     if approvers:
                         for approver in approvers:
                             res.action_user_ids = [(0, 0, {'user_id': approver.id})]
@@ -245,14 +254,14 @@ class HrMovement(models.Model):
             rec.is_invisible_button = False
             if rec.movement_type_id and rec.status not in ['refused', 'approved'] and rec.status == 'to_approve':
                 stage_id = rec.movement_type_id.stage_id.sorted('sequence')
-                if stage_id and stage_id.approvers:
-                    ids_approve = stage_id.approvers.ids
+                if stage_id and stage_id.user_ids:
+                    ids_approve = stage_id.user_ids.ids
                     user_id = rec.env.uid
                     if user_id in ids_approve:
                         index_user_id = ids_approve.index(user_id)
                         if rec.movement_type_id.sequence:
                             count = sum(1 for i in range(0, index_user_id) if rec.action_user_ids.filtered(
-                                lambda r: r.user_id == stage_id.approvers[i] and r.status == 'approved'))
+                                lambda r: r.user_id == stage_id.user_ids[i] and r.status == 'approved'))
                             if count == index_user_id and not rec.action_user_ids.filtered(
                                     lambda r: r.user_id.id == rec.env.uid and r.status):
                                 rec.is_invisible_button = True
@@ -262,8 +271,10 @@ class HrMovement(models.Model):
                     rec.write({'status': 'approved'})
 
     def action_draft_movement(self):
-        for rec in self:
-            rec.write({'status': 'to_submit'})
+        for r in self:
+            if r.status != 'refused':
+                raise UserError(_("You can not approve while its status is not Refused."))
+        self.write({'status': 'to_submit'})
         return True
 
     def action_confirm_movement(self):
