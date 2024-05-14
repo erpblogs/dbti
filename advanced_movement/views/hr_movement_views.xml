@@ -29,9 +29,9 @@
                     <button string="To Approve" name="action_confirm_movement" type="object" class="oe_highlight"
                             invisible="status != 'to_submit'"/>
                     <button string="Approved" name="action_approved_movement" type="object" class="oe_highlight"
-                            invisible="is_invisible_button == False"/>
+                            invisible="status != 'to_approve'"/>
                     <button string="Refuse" name="action_refused_movement" type="object"
-                            invisible="is_invisible_button == False"/>
+                            invisible="status not in ['to_approve','approved']"/>
                     <button string="Mark as Draft" name="action_draft_movement" type="object"
                             invisible="status != 'refused'"/>
                     <field name="status" widget="statusbar" statusbar_visible="to_approve,refused,approved"/>

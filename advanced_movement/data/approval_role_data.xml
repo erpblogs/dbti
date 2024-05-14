@@ -1,27 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
-	<record id="regional_manager" model="approval.role">
-		<field name="position_role">Regional Manager</field>
+	<!-- Create Job position at  Hr Job-->
+	<record id="regional_manager" model="hr.job">
+		<field name="name">Regional Manager</field>
 	</record>
-	<record id="marketing_department_manager" model="approval.role">
-		<field name="position_role">Marketing Department Manager</field>
+	<record id="marketing_department_manager" model="hr.job">
+		<field name="name">Marketing Department Manager</field>
 	</record>
-	<record id="it_department_manager" model="approval.role">
-		<field name="position_role">It Department Manager</field>
+	<record id="it_department_manager" model="hr.job">
+		<field name="name">It Department Manager</field>
 	</record>
-	<record id="hr_department_manager" model="approval.role">
-		<field name="position_role">HR Department Manager</field>
+	<record id="hr_department_manager" model="hr.job">
+		<field name="name">HR Department Manager</field>
 	</record>
-	<record id="rd_department_manager" model="approval.role">
-		<field name="position_role">R&amp;D Department Manager</field>
+	<record id="rd_department_manager" model="hr.job">
+		<field name="name">R&amp;D Department Manager</field>
 	</record>
-	<record id="financial_analyst" model="approval.role">
-		<field name="position_role">Financial Analyst</field>
+	<record id="financial_analyst" model="hr.job">
+		<field name="name">Financial Analyst</field>
 	</record>
-	<record id="sales_director" model="approval.role">
-		<field name="position_role">Sales Director</field>
+	<record id="sales_director" model="hr.job">
+		<field name="name">Sales Director</field>
 	</record>
-	<record id="accountant" model="approval.role">
-		<field name="position_role">Accountant</field>
+	<record id="accountant" model="hr.job">
+		<field name="name">Accountant</field>
+	</record>
+	<!--Create Job Position at Approval Role -->
+	<record id="ar_regional_manager" model="approval.role">
+		<field name="position_role_id" ref="regional_manager"/>
+	</record>
+	<record id="ar_marketing_department_manager" model="approval.role">
+		<field name="position_role_id" ref="marketing_department_manager"/>
+	</record>
+	<record id="ar_it_department_manager" model="approval.role">
+		<field name="position_role_id" ref="it_department_manager"/>
+	</record>
+	<record id="ar_hr_department_manager" model="approval.role">
+		<field name="position_role_id" ref="hr_department_manager"/>
+	</record>
+	<record id="ar_rd_department_manager" model="approval.role">
+		<field name="position_role_id" ref="rd_department_manager"/>
+	</record>
+	<record id="ar_rd_department_manager" model="approval.role">
+		<field name="position_role_id" ref="rd_department_manager"/>
+	</record>
+	<record id="ar_financial_analyst" model="approval.role">
+		<field name="position_role_id" ref="financial_analyst"/>
+	</record>
+	<record id="ar_accountant" model="approval.role">
+		<field name="position_role_id" ref="accountant"/>
 	</record>
 </odoo>

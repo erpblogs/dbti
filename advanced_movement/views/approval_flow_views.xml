@@ -28,7 +28,7 @@
 		<field name="name">approval.flow.form.views</field>
 		<field name="model">approval.flow</field>
 		<field name="arch" type="xml">
-			<tree string="Approval flow Tree">
+			<tree string="Approval flow Tree" duplicate="false">
 				<field name="movement_type"/>
 			</tree>
 		</field>
