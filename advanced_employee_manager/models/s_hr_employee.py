@@ -93,7 +93,10 @@ class SHrEmployee(models.Model):
                 if rec.s_on_hold:
                     rec.s_on_hold = False
             else:
-                rec.s_employee_status = 'inactive'
+                if rec.s_on_hold:
+                    rec.s_employee_status = 'on_hold'
+                else:
+                    rec.s_employee_status = 'inactive'
 
     @api.depends('s_last_name', 'name', 's_middle_name', 's_suffix')
     def _compute_full_name(self):
@@ -203,7 +206,8 @@ class SHrEmployee(models.Model):
     def _check_float_field_s_minimum_take_home_as_percentage(self):
         for record in self:
             if len(str(record.s_minimum_take_home_as_percentage)) > 4:
-                raise ValidationError("Field Minimum Take Home as Percentage must be less than or equal to 4 characters.")
+                raise ValidationError(
+                    "Field Minimum Take Home as Percentage must be less than or equal to 4 characters.")
 
     @api.constrains('s_monthly_rate')
     def _check_float_field_s_monthly_rate(self):
@@ -251,11 +255,14 @@ class SHrEmployee(models.Model):
     def _onchange_s_on_hold(self):
         for rec in self:
             if rec.s_on_hold:
-                rec.s_employee_status = 'on_hold'
                 if rec.s_is_active:
                     rec.s_is_active = False
+                rec.s_employee_status = 'on_hold'
             else:
-                rec.s_employee_status = 'active'
+                if rec.s_is_active:
+                    rec.s_employee_status = 'active'
+                else:
+                    rec.s_employee_status = 'inactive'
 
     @api.onchange('s_minimum_take_home_as_percentage_textbox')
     def _onchange_s_minimum_take_home_as_percentage_textbox(self):
@@ -279,13 +286,16 @@ class SHrEmployee(models.Model):
     s_phic_number = fields.Integer(string='PHIC Number', size=12)
     s_tin = fields.Integer(string='TIN', size=12)
     s_rdo_code = fields.Integer(string='RDO Code', size=4)
-    s_sss_mode = fields.Selection([('table_default', 'Table Default'), ('me_table', 'ME Table'), ('manual', 'Manual')],
-                                  string='SSS Mode', required=True)
+    s_sss_mode = fields.Selection(
+        [('none', 'None'), ('table_default', 'Table Default'), ('me_table', 'ME Table'), ('manual', 'Manual')],
+        string='SSS Mode', required=True)
     s_hdmf_mode = fields.Selection(
-        [('table', 'Table'), ('manual', 'Manual'), ('me_table', 'ME Table'), ('me_table_manual', 'ME Table Manual'),
+        [('none', 'None'), ('table', 'Table'), ('manual', 'Manual'), ('me_table', 'ME Table'),
+         ('me_table_manual', 'ME Table Manual'),
          ('table_percentage', 'Table Percentage')], string='HDMF Mode', required=True)
-    s_phic_mode = fields.Selection([('me_table', 'ME Table'), ('manual', 'Manual')], string='PHIC Mode', required=True)
-    s_whtax_mode = fields.Selection([('table', 'Table')], string='WHTAX Mode', required=True)
+    s_phic_mode = fields.Selection([('none', 'None'), ('me_table', 'ME Table'), ('manual', 'Manual')],
+                                   string='PHIC Mode', required=True)
+    s_whtax_mode = fields.Selection([('none', 'None'), ('table', 'Table')], string='WHTAX Mode', required=True)
     s_sss_manual = fields.Float(string='SSS Manual', size=10)
     s_hdmf_manual = fields.Float(string='HDMF Manual', size=10)
     s_sss_frequency = fields.Selection([('2nd', '2nd'), ('both', 'Both'), ('all', 'All')], string='SSS Frequency',
@@ -334,6 +344,54 @@ class SHrEmployee(models.Model):
     s_license_ids = fields.One2many('s.license', 's_hr_license_id', string="License")
     s_trainings_development = fields.One2many('s.training.development', 's_hr_training_development_id',
                                               string="Trainings & Development")
+
+    @api.constrains('s_current_address_postal_code')
+    def _check_postal_code_length(self):
+        for record in self:
+            if record.s_current_address_postal_code and len(str(record.s_current_address_postal_code)) > 5:
+                record.s_current_address_postal_code = int(str(record.s_current_address_postal_code)[:5])
+
+    @api.constrains('s_sss_number')
+    def _check_integer_field_s_sss_number(self):
+        for record in self:
+            if len(str(record.s_sss_number)) > 11:
+                raise ValidationError("Field SSS Number must be less than or equal to 11 characters.")
+
+    @api.constrains('s_hdmf_number')
+    def _check_integer_field_s_hdmf_number(self):
+        for record in self:
+            if len(str(record.s_hdmf_number)) > 12:
+                raise ValidationError("Field HDMF Number must be less than or equal to 12 characters.")
+
+    @api.constrains('s_phic_number')
+    def _check_integer_field_s_phic_number(self):
+        for record in self:
+            if len(str(record.s_phic_number)) > 12:
+                raise ValidationError("Field PHIC Number must be less than or equal to 12 characters.")
+
+    @api.constrains('s_tin')
+    def _check_integer_field_s_tin(self):
+        for record in self:
+            if len(str(record.s_tin)) > 12:
+                raise ValidationError("Field TIN must be less than or equal to 12 characters.")
+
+    @api.constrains('s_rdo_code')
+    def _check_integer_field_s_rdo_code(self):
+        for record in self:
+            if len(str(record.s_rdo_code)) > 4:
+                raise (ValidationError("Field RDO Code must be less than or equal to 4 characters."))
+
+    @api.constrains('s_sss_manual')
+    def _check_integer_field_s_sss_manual(self):
+        for record in self:
+            if len(str(record.s_sss_manual)) > 10:
+                raise ValidationError("Field SSS Manual must be less than or equal to 10 characters.")
+
+    @api.constrains('s_hdmf_manual')
+    def _check_integer_field_s_hdmf_manual(self):
+        for record in self:
+            if len(str(record.s_hdmf_manual)) > 10:
+                raise ValidationError("Field HDMF Manual must be less than or equal to 10 characters.")
 
     # end Work History and Qualifications
 
