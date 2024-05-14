@@ -160,6 +160,7 @@
                 <page name="work_preferences_and_attributes" string="Work Preferences and Attributes">
                     <group>
                         <group>
+                            <field name="s_employee_id"/>
                             <field name="s_part_time_only"/>
                             <field name="s_attendance_base"/>
                             <field name="s_ignore_late"/>
